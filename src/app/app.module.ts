@@ -1,18 +1,59 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
+import { AdminComponent } from './layout/admin/admin.component';
+import { BreadcrumbsComponent } from './layout/admin/breadcrumbs/breadcrumbs.component';
+import { TitleComponent } from './layout/admin/title/title.component';
+import { AuthComponent } from './layout/auth/auth.component';
+import {SharedModule} from './shared/shared.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpClientModule} from '@angular/common/http';
+import {authInterceptorProviders} from './pages/auth/Authentication/AuthInterceptor';
+import {InventoryModule} from './pages/inventory/inventory.module';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {ToastrModule} from "ngx-toastr";
+import {DatePipe} from "@angular/common";
+import {NgxSpinnerModule} from "ngx-spinner";
+import {InputTextModule} from "primeng/inputtext";
+import { ReactiveFormsModule } from '@angular/forms';
+import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatButtonModule} from "@angular/material/button";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AdminComponent,
+    BreadcrumbsComponent,
+    TitleComponent,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    SharedModule,
+    HttpClientModule,
+    ToastrModule.forRoot({
+      timeOut: 1000,
+      positionClass: 'toast-top-right'
+    }), // ToastrModule added
+    NgxSpinnerModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    NgxMatSelectSearchModule
+
+
   ],
-  providers: [],
+  schemas: [ NO_ERRORS_SCHEMA ],
+  providers: [authInterceptorProviders,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

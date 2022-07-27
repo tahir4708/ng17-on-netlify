@@ -1,0 +1,69 @@
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [title]="this.componentName">
+      <div style="padding-left: 30px" class="form-group row">
+        <div class="row-cols-4 -align-right">
+          <button [title]="'Save'" type="button" class="btn btn-sm btn-grd-success" mat-raised-button matTooltip="By Default" (click)="saveBrand()">
+            Save <i class="la la-close"></i>
+          </button>
+          &nbsp;
+          <button [title]="'Save'" type="button" class="btn btn-sm btn-grd-warning" mat-raised-button matTooltip="By Default" (click)="saveBrand()">
+            Cancel <i class="la la-close"></i>
+          </button>
+        </div>
+      </div>
+
+    </app-card>
+    <app-card>
+      <form class="form-group" [formGroup]="formGroup">
+        <jqxInput class="form-control" formControlName="purchase_id" hidden [width]="300" ></jqxInput>
+        <jqxInput class="form-control" formControlName="modified_by" hidden [width]="300" ></jqxInput>
+        <jqxDateTimeInput #modified_date class="form-control" formControlName="modified_date" hidden [width]="300" ></jqxDateTimeInput>
+        <jqxInput class="form-control" formControlName="created_by" hidden [width]="300" ></jqxInput>
+        <jqxDateTimeInput #created_date class="form-control" formControlName="created_date" hidden [width]="300" ></jqxDateTimeInput>
+        <jqxInput class="form-control" formControlName="deleted" value="0" hidden [width]="300" ></jqxInput>
+        <div class="form-group form-box">
+          <div class="form-group row">
+            <div style="padding-left: 20px;" class="form-group row-cols-md">
+              <label class="col-form-label ">Paid Amount</label>
+              <jqxInput class="form-control" formControlName="purchased_price" [width]="200" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md">
+              <label class="col-form-label">Total Quantity</label>
+              <jqxInput class="form-control" formControlName="purchased_quantity" [width]="200" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md">
+              <label class="col-form-label">Description</label>
+              <jqxDateTimeInput #purchaseDate [width]="200" [height]="32" formControlName="date_of_purchase"></jqxDateTimeInput>
+            </div>
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label class="col-form-label">Vendor</label>
+              <jqxDropDownList #vendor style="background-color: #ffffff;"
+                               [filterable]="true" class="form-control"
+                               [width]="200" [height]="20" [source]="lovMapForBrand" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="vendor_id">
+              </jqxDropDownList>
+            </div>
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label class="col-form-label">Brand</label>
+              <jqxDropDownList #purchaseType style="background-color: #ffffff;"
+                               [filterable]="true" class="form-control"
+                               [width]="200" [height]="20" [source]="lovMapForBrand" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="purchase_type_id">
+              </jqxDropDownList>
+            </div>
+          </div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+
+
+
+
+

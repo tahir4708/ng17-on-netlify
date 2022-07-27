@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "autostore": {
+    "autostore-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/autostore",
+            "outputPath": "dist/autostore-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -28,9 +28,18 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/font-awesome-scss/scss/font-awesome.scss",
+              "node_modules/ti-icons/css/themify-icons.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "src/assets/icon/icofont/css/icofont.scss",
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.base.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -69,10 +78,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "autostore:build:production"
+              "browserTarget": "autostore-ui:build:production"
             },
             "development": {
-              "browserTarget": "autostore:build:development"
+              "browserTarget": "autostore-ui:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "autostore:build"
+            "browserTarget": "autostore-ui:build"
           }
         },
         "test": {
@@ -91,17 +100,38 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
+
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/froala-editor/js/froala_editor.pkgd.min.js",
+              "src/assets/charts/flot/jquery.flot.js",
+              "src/assets/charts/flot/jquery.flot.categories.js",
+              "src/assets/charts/flot/jquery.flot.pie.js",
+              "src/assets/charts/knob/jquery.knob.js",
+
+              "src/assets/charts/waterball/createWaterBall-jquery.js",
+              "node_modules/jquery-sparkline/jquery.sparkline.min.js"
             ],
             "styles": [
-              "src/styles.scss"
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/font-awesome-scss/scss/font-awesome.scss",
+              "node_modules/ti-icons/css/themify-icons.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "src/assets/icon/icofont/css/icofont.scss",
+              "src/styles.scss",
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.base.css"
             ],
-            "scripts": []
+            "assets": [
+              "src/assets",
+              "src/favicon.ico"
+            ]
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "0cdf80bc-eca5-4f82-9e7f-1ae0d55ad48f"
   }
 }
