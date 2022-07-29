@@ -6,11 +6,12 @@ import {Observable} from 'rxjs';
 import {FormControl, FormGroup} from "@angular/forms";
 import {PurchaseOrder} from "../model/purchase-order.model";
 import {environment} from "../../../../../environments/environment";
-const ENDPOINT_SAVE_ENTITY: string = environment.API_BASE_URL + '/save_entity';
-const ENDPOINT_ENTITY_LIST: string = environment.API_BASE_URL + '/entity_list';
-const ENDPOINT_LOV_MAP: string = environment.API_BASE_URL + '/load_lov_map';
-const ENDPOINT_GET_ENTITY_BY_ID: string = environment.API_BASE_URL + '/entity_by_id';
-const ENDPOINT_DELETE_ENTITY_BY_ID: string = environment.API_BASE_URL + '/delete_product_by_id';
+const ENDPOINT_SAVE_ENTITY: string = environment.API_BASE_URL + '/purchase/save_entity';
+const ENDPOINT_ENTITY_LIST: string = environment.API_BASE_URL + '/purchase/entity_list';
+const ENDPOINT_LOV_MAP: string = environment.API_BASE_URL + '/purchase/load_lov_map';
+const ENDPOINT_GET_ENTITY_BY_ID: string = environment.API_BASE_URL + '/purchase/entity_by_id';
+const ENDPOINT_DELETE_ENTITY_BY_ID: string = environment.API_BASE_URL + '/purchase/delete_product_by_id';
+const ENDPOINT_SEARCH_PRODUCT: string = environment.API_BASE_URL + '/purchase/search_product';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
@@ -38,6 +39,9 @@ export class PurchaseOrderService {
   }
   deleteProductById(id: any): Observable<any> {
     return  this.http.get(ENDPOINT_DELETE_ENTITY_BY_ID+'?id='+id, httpOptions);
+  }
+  searchProduct(searchText: any): Observable<any> {
+    return  this.http.get(ENDPOINT_SEARCH_PRODUCT+'?searchText='+searchText, httpOptions);
   }
 
   validateAllFormFields(formGroup: FormGroup): void{

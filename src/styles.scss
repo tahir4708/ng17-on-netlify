@@ -2,12 +2,14 @@
 
 @import '~ngx-toastr/toastr.css';
 @import 'material-icons/iconfont/material-icons.css';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~bootstrap/dist/css/bootstrap.css';
 
 body {
   background-color: #f3f3f3;
   font-size: 0.875em;
   overflow-x: hidden;
-  color: #353c4e;
+  color: #000000;
   font-family: "Open Sans", sans-serif;
 }
 
@@ -19,6 +21,7 @@ body {
     font-size: 14px;
     &:focus, &:hover {
       text-decoration: none;
+
     }
   }
 }
@@ -74,8 +77,8 @@ ul {
       display: block;
       margin-bottom: 0;
       font-weight: 600;
-      color: #303548;
-      font-size: 20px;
+      color: #000000;
+      font-size: 28px;
       text-transform: capitalize;
     }
     span {
@@ -180,22 +183,24 @@ ul {
   border-radius: 5px;
   box-shadow: 0 1px 11px 0 rgba(0, 0, 0, 0.12);
   border: none;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
   .card-footer {
     background-color: #fff;
     border-top: none;
   }
   .card-header {
-    background-color: transparent;
+    background-color: #46c1c3;
     border-bottom: none;
-    padding: 25px 20px;
+    padding-top: 10px;
+    padding-left: 10px;
+    border: silver;
     .card-header-left {
-      display: inline-block;
+
     }
     .card-header-right {
       border-radius: 0 0 0 7px;
       right: 10px;
-      top: 18px;
+      top: 10px;
       display: inline-block;
       float: right;
       padding: 7px 0;
@@ -203,7 +208,7 @@ ul {
       i {
         margin: 0 8px;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 18px;
         color: #505458;
         line-height: 20px;
         &.icofont.icofont-spinner-alt-5 {
@@ -233,16 +238,16 @@ ul {
   }
   h5 {
     margin-bottom: 0;
-    color: #505458;
-    font-size: 14px;
-    font-weight: 600;
+    color: #393434;
+    font-size: 18px;
+    font-weight: 500;
     display: inline-block;
     margin-right: 10px;
     line-height: 1.4;
   }
   .card-block {
     table tr {
-      padding-bottom: 20px;
+      padding-bottom: 5px;
     }
     .sub-title {
       font-size: 14px;
@@ -284,7 +289,7 @@ ul {
       }
       > {
         a {
-          padding: 10px 16px;
+          padding: 5px 5px;
           line-height: 1.429;
         }
         li {
@@ -307,10 +312,10 @@ ul {
     }
   }
   .card-block-big {
-    padding: 30px 35px;
+    padding: 5px 5px;
   }
   .card-block-small {
-    padding: 15px 20px;
+    padding: 5px 5px;
   }
   .inner-card-block {
     border: 1px solid #ddd;
@@ -367,10 +372,10 @@ ul {
 
 .card-header-text {
   margin-bottom: 0;
-  font-size: 1rem;
-  color: rgba(51, 51, 51, 0.85);
+  font-size: 16px;
+  color: #000000;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 10;
   display: inline-block;
   vertical-align: middle;
 }

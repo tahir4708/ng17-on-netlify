@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  API_BASE_URL: 'http://ims-uat.iap.com'
+  API_BASE_URL: 'https://localhost:7130'
 };

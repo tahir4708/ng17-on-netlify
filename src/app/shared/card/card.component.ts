@@ -24,7 +24,9 @@ export class CardComponent implements OnInit {
   isCardToggled = false;
   cardLoad: string | undefined;
   constructor(private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router) {
+
+  }
 
   ngOnInit() {
   }

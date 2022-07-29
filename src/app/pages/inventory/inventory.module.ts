@@ -23,28 +23,35 @@ import {jqxWindowModule} from "jqwidgets-ng/jqxwindow";
 import {jqxButtonModule} from "jqwidgets-ng/jqxbuttons";
 import { PurchaseOrderListComponent } from './purchase/purchase-order-list/purchase-order-list.component';
 import { PurchaseOrderFormComponent } from './purchase/purchase-order-form/purchase-order-form.component';
+import {jqxGridModule} from "jqwidgets-ng/jqxgrid";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {SelectModule} from "ng-select";
+import {NgSelectModule} from "@ng-select/ng-select";
 
 
 @NgModule({
   declarations: [BrandsComponent, BrandsListComponent, ProductListComponent, ProductFormComponent, PurchaseOrderListComponent, PurchaseOrderFormComponent],
-  imports: [
-    CommonModule,
-    InventoryRoutingModule,
-    ReactiveFormsModule,
-    SharedModule,
-    FormsModule,
-    NgxSpinnerModule,
-    ButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    NgxMatSelectSearchModule,
-    jqxDropDownListModule,
-    jqxInputModule,
-    MatButtonModule,
-    jqxDateTimeInputModule,
-    jqxDataTableModule,
-    jqxWindowModule,
-    jqxButtonModule
-  ]
+    imports: [
+        CommonModule,
+        InventoryRoutingModule,
+        ReactiveFormsModule,
+        SharedModule,
+        FormsModule,
+        NgxSpinnerModule,
+        ButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        NgxMatSelectSearchModule,
+        jqxDropDownListModule,
+        jqxInputModule,
+        MatButtonModule,
+        jqxDateTimeInputModule,
+        jqxDataTableModule,
+        jqxWindowModule,
+        jqxButtonModule,
+        jqxGridModule,
+        NgbModule,
+        NgSelectModule
+    ]
 })
 export class InventoryModule { }

@@ -6,7 +6,7 @@
       <ng-content select=".code-header"></ng-content>
     </span>
     <div class="card-header-right">
-      <ul class="list-unstyled card-option">
+      <ul class="list-unstyled card-option" *ngIf="title">
         <li *ngIf="!isCardToggled" (click)="this.isCardToggled = !this.isCardToggled"><i class="icofont icofont-simple-left"></i></li>
         <li *ngIf="isCardToggled" (click)="this.isCardToggled = !this.isCardToggled"><i class="icofont icofont-simple-right"></i></li>
         <li *ngIf="isCardToggled"><i class="icofont icofont-maximize {{ fullCardIcon }} full-card" (click)="fullScreen($event)"></i></li>
@@ -19,7 +19,7 @@
   </div>
 
   <div [@cardToggle]="cardToggle">
-    <div class="card-body" [ngClass]="blockClass">
+    <div class="card-body" *ngIf="!title" [ngClass]="blockClass">
       <ng-content></ng-content>
     </div>
   </div>

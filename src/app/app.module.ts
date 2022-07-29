@@ -48,7 +48,8 @@ import {MatSelectModule} from "@angular/material/select";
     MatSelectModule,
     MatButtonModule,
     MatFormFieldModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    NgbModule
 
 
   ],

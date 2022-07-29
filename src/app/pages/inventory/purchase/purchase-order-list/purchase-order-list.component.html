@@ -38,10 +38,10 @@
     </app-card>
 
     <app-card >
-      <jqxDataTable  (onRowDoubleClick)="OnRowDoubleClick($event)" (onBindingComplete)="tableOnBindingComplete()"  [height]="'500'" #dataTable [width]="'100%'" [source]="dataAdapter" [columns]="columns" [selectionMode]="'singleRow'"
-                     [altRows]="true"  [filterMode]="'simple'" [pagerMode]="'advanced'" [theme]="'office'" [sortable]="true" [editable]="false" [filterable]="true" [pageable]="true">
+      <jqxDataTable [theme]="'energyblue'" [style]="'background'"  (onRowDoubleClick)="OnRowDoubleClick($event)" (onBindingComplete)="tableOnBindingComplete()"  [height]="'500'" #dataTable [width]="'100%'" [source]="dataAdapter" [columns]="columns" [selectionMode]="'singleRow'"
+                     [altRows]="true"  [filterMode]="'simple'" [pagerMode]="'advanced'"  [sortable]="true" [editable]="false" [filterable]="true" [pageable]="true">
       </jqxDataTable>
-      <jqxWindow #actionWindow (onClose)="myWindowOnClose()"
+      <jqxWindow [theme]="'material'" #actionWindow (onClose)="myWindowOnClose()"
                  [width]="200" [height]="100" [resizable]="false" [autoOpen]="false"
                  [position]="'center'">
         <div>Edit Dialog</div>

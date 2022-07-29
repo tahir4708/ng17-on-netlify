@@ -35,7 +35,13 @@
               "node_modules/ngx-toastr/toastr.css",
               "src/assets/icon/icofont/css/icofont.scss",
               "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.base.css",
-              "src/styles.scss"
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.office.css",
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.material.css",
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.energyblue.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "src/styles.scss",
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js"
@@ -120,7 +126,10 @@
               "node_modules/ngx-toastr/toastr.css",
               "src/assets/icon/icofont/css/icofont.scss",
               "src/styles.scss",
-              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.base.css"
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.base.css",
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.office.css",
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.material.css",
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.energyblue.css",
             ],
             "assets": [
               "src/assets",
