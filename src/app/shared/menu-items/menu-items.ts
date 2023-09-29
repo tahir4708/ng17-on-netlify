@@ -8,22 +8,22 @@ export interface BadgeItem {
 
 export interface ChildrenItems {
   state: string;
-  target?: boolean;
+  target: boolean;
   name: string;
-  type?: string;
-  children?: ChildrenItems[];
+  type: string;
+  children: ChildrenItems[];
 }
 
 export interface MainMenuItems {
   state: string;
-  short_label?: string;
-  main_state?: string;
-  target?: boolean;
+  short_label: string;
+  main_state: string;
+  target: boolean;
   name: string;
   type: string;
   icon: string;
-  badge?: BadgeItem[];
-  children?: ChildrenItems[];
+  badge: BadgeItem[];
+  children: ChildrenItems[];
 }
 
 export interface Menu {
@@ -146,7 +146,31 @@ export interface Menu {
               {
                 state: '',
                 name: 'Menu Level 2.2.2',
+                target: true,
+                children: [
+              {
+                state: '',
+                name: 'Menu Level 2.2.1',
                 target: true
+              },
+              {
+                state: '',
+                name: 'Menu Level 2.2.2',
+                target: true,
+                children: [
+              {
+                state: '',
+                name: 'Menu Level 2.2.1',
+                target: true
+              },
+              {
+                state: '',
+                name: 'Menu Level 2.2.2',
+                target: true
+              }
+            ]
+              }
+            ]
               }
             ]
           }, {

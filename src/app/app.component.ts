@@ -7,7 +7,7 @@ import {NavigationEnd, Router} from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Welcome ! Guru Able Angular 8+';
+  title = 'Imran Auto';
 
   constructor(private router: Router) { }
 
@@ -18,5 +18,7 @@ export class AppComponent implements OnInit {
       }
       window.scrollTo(0, 0);
     });
+
+
   }
 }

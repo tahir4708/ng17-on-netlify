@@ -8,10 +8,11 @@ import {PurchaseOrder} from "../model/purchase-order.model";
 import {environment} from "../../../../../environments/environment";
 const ENDPOINT_SAVE_ENTITY: string = environment.API_BASE_URL + '/purchase/save_entity';
 const ENDPOINT_ENTITY_LIST: string = environment.API_BASE_URL + '/purchase/entity_list';
-const ENDPOINT_LOV_MAP: string = environment.API_BASE_URL + '/purchase/load_lov_map';
+const ENDPOINT_LOV_MAP: string = environment.API_BASE_URL + '/purchase/lov_map';
 const ENDPOINT_GET_ENTITY_BY_ID: string = environment.API_BASE_URL + '/purchase/entity_by_id';
 const ENDPOINT_DELETE_ENTITY_BY_ID: string = environment.API_BASE_URL + '/purchase/delete_product_by_id';
 const ENDPOINT_SEARCH_PRODUCT: string = environment.API_BASE_URL + '/purchase/search_product';
+const ENDPOINT_PRODUCT_INFO: string = environment.API_BASE_URL + '/purchase/entity_by_product_id';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
@@ -42,6 +43,9 @@ export class PurchaseOrderService {
   }
   searchProduct(searchText: any): Observable<any> {
     return  this.http.get(ENDPOINT_SEARCH_PRODUCT+'?searchText='+searchText, httpOptions);
+  }
+  getProductDataById(product_id: any): Observable<any> {
+    return  this.http.get(ENDPOINT_PRODUCT_INFO+'?product_id='+product_id, httpOptions);
   }
 
   validateAllFormFields(formGroup: FormGroup): void{

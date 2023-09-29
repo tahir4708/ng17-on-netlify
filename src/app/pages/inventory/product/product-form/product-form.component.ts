@@ -12,6 +12,7 @@ import {ProductService} from "../product.service";
 import jqxDropDownList = jqwidgets.jqxDropDownList;
 import {jqxDropDownListComponent} from "jqwidgets-ng/jqxdropdownlist";
 import {jqxDateTimeInputComponent} from "jqwidgets-ng/jqxdatetimeinput";
+import {CommonService} from "../../../../common/common.service";
 
 @Component({
   selector: 'app-product-form',
@@ -48,7 +49,8 @@ export class ProductFormComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute,
+  constructor(public common: CommonService,
+              private route: ActivatedRoute,
               private router: Router,
               private fb: FormBuilder,
               private service: ProductService,
@@ -111,6 +113,7 @@ export class ProductFormComponent implements OnInit {
       status: [''],
       stock_quantity: [''],
       stock_unit: [''],
+      used_for: [''],
     });
 
     if (!this.isAddMode) {

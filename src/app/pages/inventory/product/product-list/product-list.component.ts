@@ -8,6 +8,7 @@ import {environment} from "../../../../../environments/environment";
 import {jqxDateTimeInputComponent} from "jqwidgets-ng/jqxdatetimeinput";
 import jqxDataTable = jqwidgets.jqxDataTable;
 import {jqxWindowComponent} from "jqwidgets-ng/jqxwindow";
+import {jqxInputComponent} from "jqwidgets-ng/jqxinput";
 
 @Component({
   selector: 'app-product-list',
@@ -17,6 +18,7 @@ import {jqxWindowComponent} from "jqwidgets-ng/jqxwindow";
 export class ProductListComponent implements OnInit {
   @ViewChild('actionWindow', { static: false }) actionWindow: jqxWindowComponent;
   @ViewChild('dataTable') dataTable: jqxDataTable;
+  @ViewChild('searchComponent') searchComponent: jqxInputComponent;
   menuTitle: any;
   productList: any;
   routerComponent: any;
@@ -57,6 +59,7 @@ export class ProductListComponent implements OnInit {
         { name: 'product_barcode', type: 'string'},
         { name: 'product_price', type: 'int'},
         { name: 'brand_id', type: 'int'},
+        { name: 'brand_name', type: 'string'},
         { name: 'category_id', type: 'int'},
         { name: 'product_alias_name', type: 'string'},
         { name: 'created_date', type: 'DateTime'},
@@ -72,6 +75,8 @@ export class ProductListComponent implements OnInit {
         { name: 'grade', type: 'string'},
         { name: 'size', type: 'string'},
         { name: 'location_id', type: 'int'},
+        { name: 'location_name', type: 'string'},
+        { name: 'used_for', type: 'string'},
       ],
       id: 'product_id',
       root: 'product',
@@ -82,10 +87,12 @@ export class ProductListComponent implements OnInit {
       { text: 'product id', dataField: 'product_id', hidden: true , width: 300 },
       { text: 'Name', dataField: 'product_name', width: 200 },
       { text: 'Code', dataField: 'product_code', width: 100 },
-      { text: 'Description', dataField: 'product_description', width: 200 },
+      { text: 'Description', dataField: 'product_description', width: 200, hidden: true },
+      { text: 'Used For', dataField: 'used_for', width: 200 },
       { text: 'Barcode', dataField: 'product_barcode', width: 100 },
       { text: 'Price', dataField: 'product_price', width: 100 },
       { text: 'brand id', dataField: 'brand_id',hidden: true, width: 300 },
+      { text: 'Brand', dataField: 'brand_name',hidden: true, width: 300 },
       { text: 'category id', dataField: 'category_id', hidden:true, width: 300 },
       { text: 'Desi Name', dataField: 'product_alias_name', width: 200 },
       { text: 'created date', dataField: 'created_date', hidden:true,width: 300 },
@@ -101,7 +108,7 @@ export class ProductListComponent implements OnInit {
       { text: 'Grade', dataField: 'grade', width: 100 },
       { text: 'Size', dataField: 'size', width: 100 },
       { text: 'location id', dataField: 'location_id',hidden:true, width: 300 },
-      { text: 'Location', dataField: 'Location_name', width: 100},
+      { text: 'Location', dataField: 'location_name', width: 100},
 
     ]
     this.dataAdapter =new jqx.dataAdapter(this.source);
@@ -113,6 +120,18 @@ export class ProductListComponent implements OnInit {
       this.productList = data.entity;
       this.fillgrid(this.productList);
       console.log(this.productList);
+      this.SpinnerService.hide();
+    });
+  }
+
+  async getEntityListBySearch(event) {
+    console.log(event);
+    console.log(this.searchComponent.value());
+    return this.inventory.search_product(event.target.value).subscribe((data) => {
+      this.productList = data.entity;
+      this.fillgrid(this.productList);
+      console.log(this.productList);
+      this.searchComponent.focus();
       this.SpinnerService.hide();
     });
   }

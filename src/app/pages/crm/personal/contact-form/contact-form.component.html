@@ -1,0 +1,126 @@
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [title]="'Contact Form'">
+      <div style="padding-left: 30px" class="form-group row">
+        <div class="row-cols-4 -align-right">
+          <button [title]="'Save'" type="button" class="btn btn-sm btn-primary" mat-raised-button matTooltip="By Default" (click)="saveBrand()">
+            Save <i class="las la-close"></i>
+          </button>
+        </div>
+
+        <div style="padding-left: 30px" class="row-cols-4 -align-left">
+          <button [title]="'Save'" type="button" class="btn btn-sm btn-primary" mat-raised-button matTooltip="By Default" (click)="saveBrand()">
+            Cancel <i class="las la-close"></i>
+          </button>
+        </div>
+      </div>
+
+    </app-card>
+    <app-card>
+      <div style="padding-left: 30px" class="form-group row">
+        <div class="row-cols-4 -align-right">
+          <td>
+            <jqxButton [theme]="'office'"  [height]="45" [width]="45" (click)="saveBrand()"><i class="las la-save"></i></jqxButton> &nbsp;
+          </td>
+        </div>
+
+        <div style="padding-left: 30px" class="row-cols-4 -align-left">
+          <td>
+            <jqxButton [theme]="'office'"  [height]="45" [width]="45" (click)="saveBrand()"><i class="las la-window-close"></i></jqxButton> &nbsp;
+          </td>
+        </div>
+      </div>
+      <form class="form-group" [formGroup]="formGroup">
+        <jqxInput class="form-control" formControlName="contact_id" hidden [width]="300" ></jqxInput>
+        <jqxInput class="form-control" formControlName="modified_by" hidden [width]="300" ></jqxInput>
+        <jqxDateTimeInput #modified_date class="form-control" formControlName="modified_date" hidden [width]="300" ></jqxDateTimeInput>
+        <jqxInput class="form-control" formControlName="created_by" hidden [width]="300" ></jqxInput>
+        <jqxDateTimeInput #created_date class="form-control" formControlName="created_date" hidden [width]="300" ></jqxDateTimeInput>
+        <jqxInput class="form-control" formControlName="session_id" hidden [width]="300" ></jqxInput>
+        <jqxInput class="form-control" formControlName="contact_title" hidden [width]="300" ></jqxInput>
+        <jqxInput class="form-control" formControlName="deleted" value="0" hidden [width]="300" ></jqxInput>
+        <div class="form-group form-box">
+          <div class="form-group row">
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label >First Name</label> <br>
+              <jqxInput  [theme]="'office'" formControlName="first_name" [width]="300" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label >First Name</label> <br>
+              <jqxInput [theme]="'office'" formControlName="last_name" [width]="300" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label >Cnic</label><br>
+              <jqxInput [theme]="'office'" formControlName="cnic" [width]="300" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label >Address</label><br>
+              <jqxInput [theme]="'office'" formControlName="address_line" [width]="300" ></jqxInput>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label >Country</label>
+              <jqxDropDownList #country style="background-color: #ffffff;" [theme]="'office'"
+                               [filterable]="true"
+                               [width]="300" [source]="lovMapCountry" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="country_id">
+              </jqxDropDownList>
+            </div>
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label>City</label><br>
+              <jqxDropDownList #city style="background-color: #ffffff;" [theme]="'office'"
+                               [filterable]="true"
+                               [width]="300" [source]="lovMapCity" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="city_id">
+              </jqxDropDownList>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label >Zip</label><br>
+              <jqxInput [theme]="'office'" formControlName="zip_code" [width]="300" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label >Phone/Mobile</label><br>
+              <jqxInput [theme]="'office'" formControlName="mobile_no" [width]="300" ></jqxInput>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label >Type</label><br>
+              <jqxDropDownList #contactType style="background-color: #ffffff;" [theme]="'office'"
+                               [filterable]="true"
+                               [width]="300"  [source]="lovMapContactType" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="contact_type_id">
+              </jqxDropDownList>
+            </div>
+            <!--            status-->
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label >Status</label>
+              <jqxDropDownList #status style="background-color: #ffffff;"  [theme]="'office'"
+                               [filterable]="true"
+                               [width]="300"  [source]="lovMapStatus" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="status">
+              </jqxDropDownList>
+            </div>
+            <!--            location_id  -->
+          </div>
+
+
+
+
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+
+
+
+
+

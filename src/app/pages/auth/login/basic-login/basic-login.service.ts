@@ -8,7 +8,7 @@ import {Login_request} from '../../../model/CORE/login_request.model';
 import {Menu} from '../../../../shared/menu-items/menu-items';
 
 const ENDPOINT_LOGIN: string = environment.API_BASE_URL + '/sign_in';
-const ENDPOINT_GET_MENU: string = environment.API_BASE_URL + '/get_menu';
+const ENDPOINT_GET_MENU: string = environment.API_BASE_URL + '/get_menu_v2';
 const ENDPOINT_DEFAULT_VALUES: string = environment.API_BASE_URL + '/loadLovMap';
 const httpOptions = {
   headers: new HttpHeaders({

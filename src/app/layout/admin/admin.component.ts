@@ -57,6 +57,7 @@ import {BasicLoginService} from '../../pages/auth/login/basic-login/basic-login.
   ]
 })
 export class AdminComponent implements OnInit {
+  activeIndex: any;
   navType: string; /* st1, st2(default), st3, st4 */
   themeLayout: string; /* vertical(default) */
   layoutType: string | undefined; /* dark, light */
@@ -102,10 +103,10 @@ export class AdminComponent implements OnInit {
 
 
   public config: any;
-  public menuItems1: any;
+  public Menu: Menu[];
 
   constructor(public loginService: BasicLoginService, public menuItems: MenuItems) {
-
+    this.activeIndex = 2;
     this.getAllMenu();
     this.navType = 'st5';
     this.themeLayout = 'vertical';
@@ -205,6 +206,7 @@ export class AdminComponent implements OnInit {
       this.toggleOn = this.verticalNavType === 'offcanvas' ? true : this.toggleOn;
     }
     this.verticalNavType = this.verticalNavType === 'expanded' ? 'offcanvas' : 'expanded';
+
   }
 
   onClickedOutside(e: Event) {
@@ -283,8 +285,10 @@ export class AdminComponent implements OnInit {
 
   getAllMenu() {
     return this.loginService.get_menu().subscribe((data) => {
-      this.menuItems1 = data.entity;
-      this.menuItems1.forEach(function (value: { main: any; }) {
+      //this.Menu = data.entity;
+      this.Menu = data.entity;
+      console.log(this.Menu);
+      this.Menu.forEach(function (value: { main: any; }) {
         console.log(value.main);
       });
     });

@@ -27,31 +27,46 @@ import {jqxGridModule} from "jqwidgets-ng/jqxgrid";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {SelectModule} from "ng-select";
 import {NgSelectModule} from "@ng-select/ng-select";
+import { SaleInvoiceFormComponent } from './sale/sale-invoice/sale-invoice-form/sale-invoice-form.component';
+import { SaleInvoiceListComponent } from './sale/sale-invoice/sale-invoice-list/sale-invoice-list.component';
+import { KcpBillFormComponent } from './kcp/kcp-bill-form/kcp-bill-form.component';
+import { KcpBillListComponent } from './kcp/kcp-bill-list/kcp-bill-list.component';
+import {AutoComplete, AutoCompleteModule} from "primeng/autocomplete";
+import {TableModule} from "primeng/table";
+import {DropdownModule} from "primeng/dropdown";
+import {MessageModule} from "primeng/message";
+import {DeferModule} from "primeng/defer";
 
 
 @NgModule({
-  declarations: [BrandsComponent, BrandsListComponent, ProductListComponent, ProductFormComponent, PurchaseOrderListComponent, PurchaseOrderFormComponent],
-    imports: [
-        CommonModule,
-        InventoryRoutingModule,
-        ReactiveFormsModule,
-        SharedModule,
-        FormsModule,
-        NgxSpinnerModule,
-        ButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        NgxMatSelectSearchModule,
-        jqxDropDownListModule,
-        jqxInputModule,
-        MatButtonModule,
-        jqxDateTimeInputModule,
-        jqxDataTableModule,
-        jqxWindowModule,
-        jqxButtonModule,
-        jqxGridModule,
-        NgbModule,
-        NgSelectModule
-    ]
+  declarations: [BrandsComponent, BrandsListComponent, ProductListComponent, ProductFormComponent, PurchaseOrderListComponent, PurchaseOrderFormComponent, SaleInvoiceFormComponent, SaleInvoiceListComponent, KcpBillFormComponent, KcpBillListComponent],
+  imports: [
+    CommonModule,
+    InventoryRoutingModule,
+    ReactiveFormsModule,
+    SharedModule,
+    FormsModule,
+    NgxSpinnerModule,
+    ButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    NgxMatSelectSearchModule,
+    jqxDropDownListModule,
+    jqxInputModule,
+    MatButtonModule,
+    jqxDateTimeInputModule,
+    jqxDataTableModule,
+    jqxWindowModule,
+    jqxButtonModule,
+    jqxGridModule,
+    NgbModule,
+    NgSelectModule,
+    AutoCompleteModule,
+    TableModule,
+    DropdownModule,
+    MessageModule,
+    DeferModule
+
+  ]
 })
 export class InventoryModule { }

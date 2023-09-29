@@ -5,6 +5,25 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~bootstrap/dist/css/bootstrap.css';
 
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-grids/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-treegrid/styles/material.css';
+
+
+@import '../node_modules/primeicons/primeicons.css';
+@import '../node_modules/primeng/resources/primeng.min.css';
+
+@import "../node_modules/primeng/resources/themes/lara-light-blue/theme.css";
+@import "../node_modules/primeng/resources/primeng.css";
+
+
 body {
   background-color: #f3f3f3;
   font-size: 0.875em;
@@ -47,7 +66,7 @@ ul {
 }
 
 .main-body .page-wrapper {
-  padding: 1.8rem;
+  padding: 0.25rem;
   transition: all ease-in 0.3s;
   .menu-rtl {
     .page-header-title i {
@@ -68,7 +87,7 @@ ul {
   }
   .page-header {
     margin-bottom: 30px;
-    background-color: #fff;
+    background-color: #868e96;
     padding: 30px;
   }
   .page-header-title {
@@ -189,9 +208,12 @@ ul {
     border-top: none;
   }
   .card-header {
-    background-color: #46c1c3;
+    background: rgb(255,255,255);
+    background: -moz-linear-gradient(0deg, rgba(255,255,255,1) 11%, rgba(134,237,238,1) 59%);
+    background: -webkit-linear-gradient(0deg, rgba(255,255,255,1) 11%, rgba(134,237,238,1) 59%);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 11%, rgba(134,237,238,1) 59%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#86edee",GradientType=1);
     border-bottom: none;
-    padding-top: 10px;
     padding-left: 10px;
     border: silver;
     .card-header-left {
@@ -228,7 +250,7 @@ ul {
       color: #919aa3;
       display: block;
       font-size: 13px;
-      margin-top: 5px;
+      margin-top: 1px;
     }
     + {
       .card-block, .card-block-big {
@@ -240,7 +262,6 @@ ul {
     margin-bottom: 0;
     color: #393434;
     font-size: 18px;
-    font-weight: 500;
     display: inline-block;
     margin-right: 10px;
     line-height: 1.4;
@@ -7382,7 +7403,7 @@ $col:#FF5370,#E53935,#f07178,#FF5370,#F78C6C,#F76D47,#FFCB6B,#FFB62C,#C3E88D,#91
         position: absolute;
         right: 0;
         transform: translateY(30px);
-        transition: all linear 0.3s;
+        transition: all linear 1s;
         visibility: hidden;
         width: 24rem;
       }
@@ -7598,7 +7619,7 @@ $col:#FF5370,#E53935,#f07178,#FF5370,#F78C6C,#F76D47,#FFCB6B,#FFB62C,#C3E88D,#91
 }
 
 .pcoded-inner-content {
-  padding: 10px;
+  padding: 1px;
 }
 
 .pcoded {
@@ -7677,6 +7698,7 @@ $col:#FF5370,#E53935,#f07178,#FF5370,#F78C6C,#F76D47,#FFCB6B,#FFB62C,#C3E88D,#91
 }
 
 .pcoded-inner-navbar {
+  background-color: #46627F;
   height: 100%;
 }
 
@@ -10206,7 +10228,7 @@ body {
     }
     .pcoded-header {
       &[header-theme="theme1"] {
-        color: #fff;
+        color: #303549;
         .sidebar_toggle a {
           background: transparent;
           color: #fff;
@@ -10362,7 +10384,7 @@ body {
           font-weight: 600;
         }
         &.pcoded-hasmenu:hover > a {
-          color: #000 !important;
+          color: #fff !important;
         }
         &:hover > a {
           color: #000 !important;
@@ -10374,9 +10396,9 @@ body {
       }
       background: #fff;
       .main-menu {
-        background-color: #fff;
+        background-color: #303549;
         .main-menu-header {
-          background-color: #fff;
+          background-color: #303549;
           .user-details span {
             color: #000;
           }
@@ -10396,29 +10418,29 @@ body {
         > li {
           &.pcoded-hasmenu {
             > a:after, .pcoded-submenu li.pcoded-hasmenu > a:after {
-              color: #000;
+              color: #fff;
             }
             &.pcoded-trigger {
               > a:after, .pcoded-submenu li.pcoded-hasmenu.pcoded-trigger > a:after {
-                color: #000;
+                color: #fff;
               }
             }
           }
           &.active:hover > a, &:hover > a {
-            background: #fff;
-            color: #000;
+            background: #5867dd;
+            color: #fff;
           }
         }
         .pcoded-hasmenu .pcoded-submenu li {
           &:hover > a {
             background-color: #fff;
-            color: #000;
+            color: #fff;
             &:before {
               border-left-color: #fff;
             }
           }
           &.active > a {
-            color: #000;
+            color: #fff;
             .pcoded-mtext {
               &:before {
                 border-bottom-color: #fff;
@@ -10439,28 +10461,28 @@ body {
         }
         > li {
           &:hover > a:before {
-            border-left-color: #fff;
+            border-left-color: #000;
           }
           &.pcoded-hasmenu:hover > a:after {
-            color: #000;
+            color: #fff;
           }
           &.pcoded-trigger {
             > a {
-              background: #fff;
-              border-bottom-color: #fff;
+              background: #5867dd;
+              border-bottom-color: #5867dd;
             }
             &.active > a {
               background: #fff;
             }
           }
           &.pcoded-hasmenu .pcoded-submenu li.pcoded-hasmenu:hover > a:after {
-            color: #fff;
+            color: #303549;
           }
           > a {
-            color: #000 !important;
+            color: #fff !important;
           }
           &.active > a {
-            background: #fff !important;
+            background: #303549 !important;
             color: #FFF;
             &:before {
               border-left-color: #fff;
@@ -10988,7 +11010,7 @@ body {
         background-color: #303549;
       }
       &:before {
-        background-color: #fff;
+        background-color: #303549;
       }
     }
     &[header-theme="theme2"] .head {
@@ -11262,9 +11284,9 @@ body {
   }
   .pcoded-header {
     &[header-theme="theme1"] {
-      background: #fff;
+      background: #303549;
       a {
-        color: #303548;
+        color: #fff;
       }
       .navbar-logo a {
         color: #fff;

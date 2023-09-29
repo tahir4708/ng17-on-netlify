@@ -2,25 +2,23 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card [title]="this.componentName">
-      <!--<div style="padding-left: 30px" class="form-group row">
-        <div class="row-cols-4 -align-right">
-          <button [title]="'Save'" type="button" class="btn btn-sm btn-grd-success" mat-raised-button matTooltip="By Default" (click)="addRow()">
-            Save <i class="la la-close"></i>
-          </button>
-          &nbsp;
-          <button [title]="'Save'" type="button" class="btn btn-sm btn-grd-warning" mat-raised-button matTooltip="By Default" (click)="saveBrand()">
-            Cancel <i class="la la-close"></i>
-          </button>
-        </div>
-
-      </div>-->
-
-
 
     </app-card>
     <app-card>
 
+      <div style="padding-left: 30px" class="form-group row">
+        <div class="row-cols-4 -align-right">
+          <td>
+            <jqxButton [theme]="'office'"  [height]="45" [width]="45" (click)="saveEntity()"><i class="las la-save"></i></jqxButton> &nbsp;
+          </td>
+        </div>
 
+        <div style="padding-left: 30px" class="row-cols-4 -align-left">
+          <td>
+            <jqxButton [theme]="'office'"  [height]="45" [width]="45" (click)="saveEntity()"><i class="las la-window-close"></i></jqxButton> &nbsp;
+          </td>
+        </div>
+      </div>
       <form class="form-group" [formGroup]="formGroup">
         <jqxInput class="form-control" formControlName="purchase_id" hidden [width]="300" ></jqxInput>
         <jqxInput class="form-control" formControlName="modified_by" hidden [width]="300" ></jqxInput>
@@ -34,19 +32,23 @@
               <label class="col-form-label">Vendor</label>
               <jqxDropDownList #vendor style="background-color: #ffffff;"
                                [filterable]="true"
-                               [width]="400"  [source]="lovMapForBrand"  [height]="30"
+                               [width]="400"  [source]="lovMapForVendors"  [height]="35"
                                [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'" [theme]="'office'"
                                [displayMember]="'label'" [valueMember]="'key'" formControlName="vendor_id">
               </jqxDropDownList>
             </div>
             <div style="padding-left: 20px"  class="form-group row-cols-md-3">
               <label class="col-form-label">Bill Paid Status</label>
-              <jqxDropDownList #purchaseType style="background-color: #ffffff;"
+              <jqxDropDownList #billStatus style="background-color: #ffffff;"
                                [filterable]="true"
-                               [width]="400"  [source]="lovMapForBrand"  [height]="30"
+                               [width]="400"  [source]="lovMapForBrand"  [height]="35"
                                [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'" [theme]="'office'"
                                [displayMember]="'label'" [valueMember]="'key'" formControlName="purchase_type_id">
               </jqxDropDownList>
+            </div>
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label class="col-form-label">Purchase Date</label>
+              <jqxDateTimeInput #purchase_date  [theme]="'office'" formControlName="date_of_purchase"  [width]="400" [height]="35" ></jqxDateTimeInput>
             </div>
           </div>
 
@@ -61,41 +63,43 @@
                       <jqxInput #studentIdComponent [width]="400" [source]="searchSource" [searchMode]="'containsignorecase'"
                                 [displayMember]="'product_name'" [valueMember]="'product_id'"   (onSelect)="studentSelected($event)"
 
-                                [height]="35"  formControlName="searchKey" [theme]="'office'" ></jqxInput>
+                                [height]="30"  formControlName="searchKey" [theme]="'office'" ></jqxInput>
                       <input type="hidden" formControlName="studentId"/>
 
                       <!--<span class="m-form__help m&#45;&#45;font-danger" ></span>
                       <span *ngIf="filterForm?.getRawValue()?.studentName">{{filterForm.getRawValue().studentName}}</span>-->
-                    </td>
+                    </td><!--
+                    <td>`1as
+                      <jqxButton [theme]="'office'"  [height]="30" [width]="45" (click)="addRow()"><i class="pi pi-plus"></i></jqxButton> &nbsp;
+                    </td>--><!--
                     <td>
-                      <jqxButton [theme]="'office'"  [height]="45" [width]="45" (click)="addRow()"><i class="pi pi-plus"></i></jqxButton> &nbsp;
-                    </td>
-                    <td>
-                      <jqxButton [theme]="'office'"  [height]="45" [width]="45" (click)="addRow()"><i class="pi pi-trash"></i></jqxButton> &nbsp;
-                    </td>
+                      <jqxButton [theme]="'office'"  [height]="30" [width]="45" (click)="addRow()"><i class="pi pi-trash"></i></jqxButton> &nbsp;
+                    </td>-->
                   </tr>
                 </table>
 
+             </div>
 
-
-              </div>
-
-              <!--(onRowselect)="OnRowSelect($event)" (onRowunselect)="OnRowUnselect($event)"-->
-              <jqxGrid #dataTable  (onCellvaluechanged)="OnRowSelect($event)"  [height]="'500'"  [width]="'100%'"
-                       [source]="dataAdapter" [columns]="columns"
+              <jqxGrid #dataTable   (onCellvaluechanged)="OnRowSelect($event)"   [height]="'100%'"  [width]="'100%'"
+                       [source]="dataAdapter" [columns]="columns" (onRowdoubleclick)="onRowDobleClick($event)"
                          [theme]="'office'" [sortable]="true"  [filterable]="true" [editable]="true" [selectionmode]="'multiplerowsextended'" >
               </jqxGrid>
             </div>
           </div>
           <div class="form-group row">
             <div style="padding-left: 20px;" class="form-group row-cols-md">
+              <label class="col-form-label ">Total Amount</label>
+              <jqxInput class="form-control" [disabled]="true" formControlName="total_bill_amount" [width]="200" [height]="30" ></jqxInput>
               <label class="col-form-label ">Total Paid Amount</label>
-              <jqxInput class="form-control" [disabled]="true" [value]="sumOfPurchasePrice" formControlName="purchased_price" [width]="200" ></jqxInput>
+              <jqxInput class="form-control" [disabled]="false" (keyup.enter)="calculateRemaingAmount($event)" formControlName="paid_bill_amount" [width]="200" [height]="30" ></jqxInput>
+              <label class="col-form-label ">Remaining Amount</label>
+              <jqxInput class="form-control" [disabled]="true" formControlName="remaining_bill_amount" [width]="200" [height]="30" ></jqxInput>
+
             </div>
-            <div style="padding-left: 20px;" class="form-group row-cols-md">
+            <!--<div style="padding-left: 20px;" class="form-group row-cols-md">
               <label class="col-form-label ">Total Quantity</label>
-              <jqxInput class="form-control" [disabled]="true" [value]="sumOfQuantity" formControlName="purchased_quantity" [width]="200" ></jqxInput>
-            </div>
+              <jqxInput class="form-control" [disabled]="true" [value]="sumOfQuantity" formControlName="purchased_quantity" [width]="200" [height]="30" ></jqxInput>
+            </div>-->
           </div>
         </div>
       </form>

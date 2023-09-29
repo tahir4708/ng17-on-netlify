@@ -1,46 +1,17 @@
 <div class="row">
   <div class="col-sm-12">
     <!-- Basic table card start -->
-    <app-card [title]="'Product'" [targetForComponent]="routerComponent" [classHeader]="true" [blockClass]="'table-border-style'">
-      <!--<div class="table-responsive">
-        <table class="table">
-          <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let brand of brandList">
-            <th scope="row">{{brand.brand_id}}</th>
-            <td>{{brand.brand_name}}</td>
-            <td>{{brand.brand_type_name}}</td>
-            <td>{{brand.status}}</td>
-            <td>
-              <a mat-list-item [routerLink]="['/inventory/brands-form/'+brand.brand_id]" class="checkcss">
-                <div class="align-cont">
-                  <div class="text-style" > <span >Edit</span> </div>
-                </div>
-              </a>
-              <a mat-list-item [routerLink]="" (click)="deleteBrand(brand.brand_id)"  class="checkcss">
-                <div class="align-cont">
-                  <div class="text-style" > <span >Delete</span> </div>
-                </div>
-              </a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>-->
-    </app-card>
-
+    <app-card [title]="'Product'" [targetForComponent]="routerComponent" [classHeader]="true" [blockClass]="'table-border-style'"></app-card>
     <app-card >
+      <label class="col-form-label ">Search &nbsp; &nbsp; </label>
+      <jqxInput #searchComponent autofocus [width]="400" [searchMode]="'containsignorecase'"
+                [height]="30" (keyup)="getEntityListBySearch($event)" [theme]="'office'" ></jqxInput>
+    </app-card>
+    <app-card>
         <jqxDataTable  (onRowDoubleClick)="OnRowDoubleClick($event)" (onBindingComplete)="tableOnBindingComplete()"  [height]="'500'" #dataTable [width]="'100%'" [source]="dataAdapter" [columns]="columns" [selectionMode]="'singleRow'"
-                      [altRows]="true"  [filterMode]="'simple'" [pagerMode]="'advanced'" [theme]="'office'" [sortable]="true" [editable]="false" [filterable]="true" [pageable]="true">
+                      [altRows]="true"  [filterMode]="'simple'" [pagerMode]="'advanced'" [theme]="'office'" [sortable]="true" [editable]="false" [pageable]="true">
         </jqxDataTable>
+    </app-card>
       <jqxWindow #actionWindow (onClose)="myWindowOnClose()"
                  [width]="200" [height]="100" [resizable]="false" [autoOpen]="false"
                  [position]="'center'">
@@ -65,7 +36,6 @@
           </table>
         </div>
       </jqxWindow>
-    </app-card>
 
     <!-- Background Utilities table end -->
   </div>

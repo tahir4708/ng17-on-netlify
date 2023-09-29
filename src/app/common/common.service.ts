@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 })
 export class CommonService {
 
-  public theme: 'material'
+  public theme: 'OFFICE'
   constructor(
     private http: HttpClient,
     private toastr: ToastrService,

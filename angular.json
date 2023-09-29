@@ -38,10 +38,12 @@
               "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.office.css",
               "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.material.css",
               "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.energyblue.css",
+              "node_modules/line-awesome/dist/line-awesome/css/line-awesome.css",
               "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/primeng.css",
-              "node_modules/primeng/resources/themes/saga-blue/theme.css",
-              "src/styles.scss",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "src/styles.scss"
+
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js"
@@ -52,13 +54,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
                 }
               ],
               "fileReplacements": [

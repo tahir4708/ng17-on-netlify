@@ -6,6 +6,10 @@ import {ProductFormComponent} from "./product/product-form/product-form.componen
 import {ProductListComponent} from "./product/product-list/product-list.component";
 import {PurchaseOrderListComponent} from "./purchase/purchase-order-list/purchase-order-list.component";
 import {PurchaseOrderFormComponent} from "./purchase/purchase-order-form/purchase-order-form.component";
+import {SaleInvoiceListComponent} from "./sale/sale-invoice/sale-invoice-list/sale-invoice-list.component";
+import {SaleInvoiceFormComponent} from "./sale/sale-invoice/sale-invoice-form/sale-invoice-form.component";
+import {KcpBillFormComponent} from "./kcp/kcp-bill-form/kcp-bill-form.component";
+import {KcpBillListComponent} from "./kcp/kcp-bill-list/kcp-bill-list.component";
 
 
 const routes: Routes = [
@@ -36,6 +40,21 @@ const routes: Routes = [
   },{
     path: 'purchase-form/:id',
     component: PurchaseOrderFormComponent,
+  },{
+    path: 'sale-form/:id',
+    component: SaleInvoiceFormComponent,
+  },{
+    path: 'sale-invoice-form',
+    component: SaleInvoiceFormComponent,
+  },{
+    path: 'sale-invoice-list',
+    component: SaleInvoiceListComponent,
+  },{
+    path: 'kcp-bill-form',
+    component: KcpBillFormComponent,
+  },{
+    path: 'kcp-bill-list',
+    component: KcpBillListComponent,
   },
 
 ];

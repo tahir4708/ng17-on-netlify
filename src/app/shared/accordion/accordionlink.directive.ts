@@ -42,9 +42,17 @@ export class AccordionLinkDirective implements OnInit, OnDestroy {
   }
 
   toggle(): any {
+
     /*for slimscroll on and off*/
     document.querySelector('.pcoded-inner-navbar').classList.add('scroll-sidebar');
 
     this.open = !this.open;
   }
+  toggleLeave(): any {
+    /*for slimscroll on and off*/
+    document.querySelector('.pcoded-inner-navbar').classList.add('scroll-sidebar');
+
+    this.open = !this.open;
+  }
+
 }

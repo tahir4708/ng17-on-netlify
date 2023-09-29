@@ -1,0 +1,15 @@
+/* CSS */
+.large-input {
+  width: 100%; /* Adjust the width as needed */
+  height: 40px; /* Adjust the height as needed */
+  /* Additional styling if desired */
+}
+/* Add borders to all cells in the table */
+::ng-deep .p-table .p-cell-editing {
+  border: 1px solid #ccc; /* You can adjust the border style and color */
+}
+
+/* Add borders to table headers */
+::ng-deep .p-table .p-headercell {
+  border: 1px solid #ccc; /* You can adjust the border style and color */
+}

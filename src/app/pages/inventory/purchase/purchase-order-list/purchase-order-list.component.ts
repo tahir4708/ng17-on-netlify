@@ -29,6 +29,7 @@ export class PurchaseOrderListComponent implements OnInit {
   product_id: any;
 
   source: any;
+  private purchase_id: any;
   constructor(private route: ActivatedRoute,
               private router: Router,
               public inventory: ProductService,
@@ -37,6 +38,7 @@ export class PurchaseOrderListComponent implements OnInit {
               private ref: ChangeDetectorRef,
               private datepipe: DatePipe) {
 
+    console.log(this.router.config);
     this.currentUser = JSON.parse(sessionStorage.getItem('user')) ;
   }
 
@@ -64,7 +66,12 @@ export class PurchaseOrderListComponent implements OnInit {
         { name: 'modified_date', type: 'DateTime'},
         { name: 'status', type: 'string'},
         { name: 'vendor_id', type: 'int'},
-        { name: 'purchase_type_id', type: 'int'},
+        { name: 'vendor_name', type: 'string'},
+        { name: 'purchase_type_name', type: 'string'},
+        { name: 'total_bill_amount', type: 'decimal'},
+        { name: 'paid_bill_amount', type: 'decimal'},
+        { name: 'remaining_bill_amount', type: 'decimal'},
+        { name: 'purchase_lines_quantity', type: 'int'},
 
       ],
       id: 'product_id',
@@ -74,9 +81,9 @@ export class PurchaseOrderListComponent implements OnInit {
 
     this.columns = [
       { text: 'purchase id', dataField: 'purchase_id', width: 300 ,hidden: true},
-      { text: 'Total Purchase Quantity', dataField: 'purchased_quantity', width: 300 },
-      { text: 'Total Amount of Purchase', dataField: 'purchased_price', width: 300 },
-      { text: 'Purchase Date', dataField: 'date_of_purchase', width: 300, cellsformat: 'dd-MMMM-yyyy' },
+      { text: 'Total Purchase Quantity', dataField: 'purchased_quantity',hidden: true, width: 300 },
+      { text: 'Total Amount of Purchase', dataField: 'purchased_price', hidden: true,width: 300 },
+      { text: 'Purchase Date', dataField: 'date_of_purchase', width: 200 },
       { text: 'deleted', dataField: 'deleted', width: 300 ,hidden: true},
       { text: 'created by', dataField: 'created_by', width: 300 ,hidden: true},
       { text: 'created date', dataField: 'created_date', width: 300 ,hidden: true},
@@ -84,8 +91,12 @@ export class PurchaseOrderListComponent implements OnInit {
       { text: 'modified date', dataField: 'modified_date', width: 300 ,hidden: true},
       { text: 'status', dataField: 'status', width: 300 ,hidden: true},
       { text: 'vendor id', dataField: 'vendor_id', width: 300 ,hidden: true},
-      { text: 'Vendor', dataField: 'vendor_name', width: 300 },
-      { text: 'Type', dataField: 'purchase_type_name', width: 300 },
+      { text: 'Vendor', dataField: 'vendor_name', width: 235 },
+      { text: 'Type', dataField: 'purchase_type_name', width: 200 },
+      { text: 'Total amount', dataField: 'total_bill_amount', width: 200 },
+      { text: 'Paid Amount', dataField: 'paid_bill_amount', width: 200 },
+      { text: 'Remaining Amount', dataField: 'remaining_bill_amount', width: 200 },
+      { text: 'No. of Items', dataField: 'purchase_lines_quantity', width: 200 },
 
     ]
     this.dataAdapter =new jqx.dataAdapter(this.source);
@@ -128,34 +139,36 @@ export class PurchaseOrderListComponent implements OnInit {
     let args = event.args;
     let index = args.index;
     let row = args.row;
-    this.product_id =row.product_id;
+    this.purchase_id =row.purchase_id;
     // Update the widgets inside Window.
-    this.actionWindow.setTitle('Altert: ' + row.product_id);
+    this.actionWindow.setTitle('Altert: ' + row.purchase_id);
     this.actionWindow.open();
   };
   editButtionClick(): void {
-    this.router.navigate(['/inventory/product-form/'+this.product_id])
+    this.router.navigate(['/inventory/purchase-form/'+this.purchase_id])
     this.actionWindow.hide();
   };
 
   deleteButtomClick(): any {
     debugger;
-    this.inventory.getProductById(this.product_id)
-      .subscribe(x => {
-        this.product =   x.entity;
-        this.SpinnerService.hide();
-      });
+
     this.SpinnerService.show();
-    this.product.deleted = true;
-    this.product.modified_by = this.currentUser.modified_by;
-    return this.service.save(this.product).subscribe((data) => {
-      this.inventory.product_list().subscribe((data) => {
-        this.entityList = data.entity;
-        this.fillgrid(this.entityList);
-        this.SpinnerService.hide();
-        this.actionWindow.hide();
+    this.service.getEntityById(this.purchase_id)
+      .subscribe(x => {
+        this.product =   x.entity[0];
+        console.log(x.entity[0]);
+        this.product.deleted = true;
+        return this.service.save(this.product).subscribe((data) => {
+          this.service.entityList().subscribe((data) => {
+            this.entityList = data.entity;
+            this.fillgrid(this.entityList);
+            this.SpinnerService.hide();
+            this.actionWindow.hide();
+          });
+        });
       });
-    });
+    console.log(this.product);
+
   };
 
   myWindowOnClose(): void {

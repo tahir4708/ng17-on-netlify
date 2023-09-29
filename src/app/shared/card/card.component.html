@@ -9,11 +9,7 @@
       <ul class="list-unstyled card-option" *ngIf="title">
         <li *ngIf="!isCardToggled" (click)="this.isCardToggled = !this.isCardToggled"><i class="icofont icofont-simple-left"></i></li>
         <li *ngIf="isCardToggled" (click)="this.isCardToggled = !this.isCardToggled"><i class="icofont icofont-simple-right"></i></li>
-        <li *ngIf="isCardToggled"><i class="icofont icofont-maximize {{ fullCardIcon }} full-card" (click)="fullScreen($event)"></i></li>
-        <li *ngIf="isCardToggled"><i class="icofont icofont-minus minimize-card" appCardToggleEvent (click)="toggleCard($event)"></i></li>
-        <li *ngIf="isCardToggled"><i class="icofont icofont-refresh reload-card" (click)="appCardRefresh($event)" ></i></li>
-        <li *ngIf="isCardToggled"><i class="icofont icofont-ui-add add-task-card" (click)="addTask($event)" ></i></li>
-        <li *ngIf="isCardToggled"><i class="icofont icofont-error close-card" (click)="closeCard($event)"></i></li>
+        <li *ngIf="isCardToggled"><i class="icofont icofont-ui-add add-task-card" (click)="addTask($event)"></i></li>
       </ul>
     </div>
   </div>

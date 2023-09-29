@@ -11,6 +11,7 @@ const ENDPOINT_BRANDS_LIST: string = environment.API_BASE_URL + '/brands_list';
 const ENDPOINT_LOV_MAP: string = environment.API_BASE_URL + '/loadLovMap';
 const ENDPOINT_GET_BRAND_BY_ID: string = environment.API_BASE_URL + '/brand_by_id';
 const deleteBrandById: string = environment.API_BASE_URL + '/deleteBrandById';
+const ENDPOINT_GET_KCP_LABOUR_RATES: string = environment.API_BASE_URL + '/SearchWorkItem';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
@@ -38,5 +39,9 @@ export class InventoryService {
   }
   deleteBrandById(id: any): Observable<any> {
     return  this.http.get(deleteBrandById+'?id='+id, httpOptions);
+  }
+
+  getKcpLabourRates(): Observable<any> {
+    return  this.http.get(ENDPOINT_GET_KCP_LABOUR_RATES, httpOptions);
   }
 }

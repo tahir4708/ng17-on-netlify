@@ -5,6 +5,7 @@ import {Login_request} from '../../../model/CORE/login_request.model';
 import {AngularDeviceInformationService} from 'angular-device-information';
 import {Router} from '@angular/router';
 import {lovmap} from '../../../model/CORE/lovmap';
+import {ToastrService} from "ngx-toastr";
 @Component({
   selector: 'app-basic-login',
   templateUrl: './basic-login.component.html',
@@ -16,6 +17,7 @@ export class BasicLoginComponent implements OnInit {
   public user_data: string;
   public lovmap: lovmap[];
   constructor(
+    private toast: ToastrService,
     private router: Router,
     private fb: UntypedFormBuilder,
     private deviceInformationService: AngularDeviceInformationService,
@@ -39,8 +41,10 @@ export class BasicLoginComponent implements OnInit {
     this.service.save(this.login_request).subscribe((data) => {
         sessionStorage.clear();
         sessionStorage.setItem('user', JSON.stringify(data.entity));
-        sessionStorage.setItem('token', JSON.stringify(data.keyValuePairs.token));
-        console.log(data.keyValuePairs.token);
+        sessionStorage.setItem('token', data.keyValuePairs.token);
+        console.log(sessionStorage);
+        console.log(this.toast.success("test","test"));
+
       // tslint:disable-next-line:no-shadowed-variable
         this.router.navigate(['/dashboard']);
 

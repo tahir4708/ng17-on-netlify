@@ -11,6 +11,7 @@ const ENDPOINT_PRODUCT_LIST: string = environment.API_BASE_URL + '/product_list'
 const ENDPOINT_LOV_MAP: string = environment.API_BASE_URL + '/loadLovMap';
 const ENDPOINT_GET_PRODUCT_BY_ID: string = environment.API_BASE_URL + '/Product_by_id';
 const deleteProductById: string = environment.API_BASE_URL + '/deleteProductById';
+const ENDPOINT_SEARCH_PRODUCT: string = environment.API_BASE_URL + '/search_product_by_value';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
@@ -28,6 +29,16 @@ export class ProductService {
   }
   product_list(): Observable<any> {
     return this.http.get(ENDPOINT_PRODUCT_LIST, httpOptions);
+  }
+  search_product(searchValue: any): Observable<any> {
+    debugger;
+    console.log(searchValue);
+    if(searchValue != ''){
+      return this.http.get(ENDPOINT_SEARCH_PRODUCT+'?searchValue='+searchValue, httpOptions);
+    }else{
+      return this.http.get(ENDPOINT_PRODUCT_LIST, httpOptions);
+    }
+
   }
 
   lovMap(): Observable<any> {

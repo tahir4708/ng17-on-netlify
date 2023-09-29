@@ -10,8 +10,8 @@ import { TitleComponent } from './layout/admin/title/title.component';
 import { AuthComponent } from './layout/auth/auth.component';
 import {SharedModule} from './shared/shared.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientModule} from '@angular/common/http';
-import {authInterceptorProviders} from './pages/auth/Authentication/AuthInterceptor';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {AuthInterceptor, authInterceptorProviders} from './pages/auth/Authentication/AuthInterceptor';
 import {InventoryModule} from './pages/inventory/inventory.module';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ToastrModule} from "ngx-toastr";
@@ -23,6 +23,9 @@ import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatSelectModule} from "@angular/material/select";
+import {TabViewModule} from "primeng/tabview";
+import {ButtonModule} from "primeng/button";
+import {DashboardDefaultModule} from "./pages/dashboard/dashboard-default/dashboard-default.module";
 
 @NgModule({
   declarations: [
@@ -49,12 +52,20 @@ import {MatSelectModule} from "@angular/material/select";
     MatButtonModule,
     MatFormFieldModule,
     NgxMatSelectSearchModule,
-    NgbModule
+    NgbModule,
+    TabViewModule,
+    ButtonModule,
+    DashboardDefaultModule,
+    InputTextModule,
 
 
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [authInterceptorProviders,DatePipe],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  },,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
