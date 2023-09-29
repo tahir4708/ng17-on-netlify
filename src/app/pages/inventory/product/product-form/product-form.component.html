@@ -1,0 +1,142 @@
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [title]="this.componentName">
+
+    </app-card>
+    <app-card>
+      <div style="padding-left: 30px" class="form-group row">
+
+        <button class="btn btn-success btn-outline-success" (click)="saveBrand()"><i class="icofont icofont-save"></i></button>
+        &nbsp;<button class="btn btn-danger btn-outline-danger"><i class="icofont icofont-close"></i></button>
+            <!--<button class="btn btn-success btn-outline-success" (click)="saveBrand()"><i class="la la-save"></i></button>
+
+
+
+            <jqxButton [theme]="'office'"  [height]="45" [width]="45" ><i class="las la-window-close"></i></jqxButton> &nbsp;
+-->
+      </div>
+      <form class="form-group" [formGroup]="formGroup">
+        <jqxInput class="form-control" formControlName="product_id" hidden [width]="300" ></jqxInput>
+        <jqxInput class="form-control" formControlName="modified_by" hidden [width]="300" ></jqxInput>
+        <jqxDateTimeInput #modified_date class="form-control" formControlName="modified_date" hidden [width]="300" ></jqxDateTimeInput>
+        <jqxInput class="form-control" formControlName="created_by" hidden [width]="300" ></jqxInput>
+        <jqxDateTimeInput #created_date class="form-control" formControlName="created_date" hidden [width]="300" ></jqxDateTimeInput>
+        <jqxInput class="form-control" formControlName="session_id" hidden [width]="300" ></jqxInput>
+        <jqxInput class="form-control" formControlName="deleted" value="0" hidden [width]="300" ></jqxInput>
+        <div class="form-group form-box">
+          <div class="form-group row">
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label ">Name</label>
+              <jqxInput class="form-control" formControlName="product_name" [width]="300" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label">Code</label>
+              <jqxInput class="form-control" formControlName="product_code" [width]="300" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label">Description</label>
+              <jqxInput class="form-control" formControlName="product_description" [width]="300" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label">Barcode</label>
+              <jqxInput class="form-control" formControlName="product_barcode" [width]="300" ></jqxInput>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label ">Price</label>
+              <jqxInput class="form-control" formControlName="product_price" [width]="300" ></jqxInput>
+            </div>
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label class="col-form-label">Brand</label>
+              <jqxDropDownList #brand style="background-color: #ffffff;"
+                               [filterable]="true" class="form-control"
+                               [width]="275" [height]="35" [source]="lovMapForBrand" [selectedIndex]="0"
+                               [animationType]="'fade'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="brand_id">
+              </jqxDropDownList>
+            </div>
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label class="col-form-label">Category</label>
+              <jqxDropDownList #category style="background-color: #ffffff;"
+                               [filterable]="true" class="form-control"
+                               [width]="275" [height]="35" [source]="lovMapForCategory" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="category_id">
+              </jqxDropDownList>
+            </div>
+            <!--            created_date-->
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label ">Used For</label>
+              <jqxInput class="form-control" formControlName="used_for" [width]="300" ></jqxInput>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--            status-->
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label class="col-form-label">Status</label>
+              <jqxDropDownList #status style="background-color: #ffffff;"
+                               [filterable]="true" class="form-control"
+                               [width]="275" [height]="35" [source]="lovMapForStatus" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="status">
+              </jqxDropDownList>
+            </div>
+            <!--            product_type_id-->
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label class="col-form-label">Type</label>
+              <jqxDropDownList #ProductType style="background-color: #ffffff;"
+                               [filterable]="true" class="form-control"
+                               [width]="275" [height]="35" [source]="lovMapForProductType" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="product_type_id">
+              </jqxDropDownList>
+            </div>
+            <!--            stock_quantity-->
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label ">Stock Quantity</label>
+              <jqxInput class="form-control" formControlName="stock_quantity" [width]="300" ></jqxInput>
+            </div>
+            <!--            location_id  -->
+            <div style="padding-left: 20px"  class="form-group row-cols-md-3">
+              <label class="col-form-label">Location</label>
+              <jqxDropDownList #location style="background-color: #ffffff;"
+                               [filterable]="true" class="form-control"
+                               [width]="275" [height]="35" [source]="lovMapForLocation" [selectedIndex]="0"
+                               [animationType]="'fade'" [dropDownHorizontalAlignment]="'right'"
+                               [displayMember]="'label'" [valueMember]="'key'" formControlName="location_id">
+              </jqxDropDownList>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--            stock_unit-->
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label ">Stock Unit</label>
+              <jqxInput class="form-control" formControlName="stock_unit" [width]="300" ></jqxInput>
+            </div>
+            <!--            grade-->
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label ">Grade</label>
+              <jqxInput class="form-control" formControlName="grade" [width]="300" ></jqxInput>
+            </div>
+            <!--            size-->
+            <div style="padding-left: 20px;" class="form-group row-cols-md-3">
+              <label class="col-form-label ">Size</label>
+              <jqxInput class="form-control" formControlName="size" [width]="300" ></jqxInput>
+            </div>
+          </div>
+
+
+
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+
+
+
+
+
