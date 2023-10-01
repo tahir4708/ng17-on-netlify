@@ -1,22 +1,23 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'windows-latest'  # Use a Windows-based agent pool for IIS
 
 steps:
-- task: NodeTool@0
+- task: UseNode@1
   inputs:
-    versionSpec: '10.x'
+    version: '10.x'  # Change the Node.js version if needed
   displayName: 'Install Node.js'
 
 - script: |
-    npm install -g @angular/cli --force
+    npm install -g @angular/cli
     npm install --force
     ng build --prod
   displayName: 'npm install and build'
+
+- script: |
+    # Add any additional code analysis steps here, if needed.
+  displayName: 'Code Analysis'
+
+# Add more steps for saving build artifacts, deploying, etc., as needed.
