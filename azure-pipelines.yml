@@ -11,13 +11,19 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install -g @angular/cli
+    npm install -g @angular/cli --force
     npm install --force
     ng build --prod
   displayName: 'npm install and build'
 
+# Add any additional code analysis steps here, if needed.
 - script: |
-    # Add any additional code analysis steps here, if needed.
+    # Example of a code analysis step:
+    # Run a linter or static code analysis tool.
+    # Replace the comment and command with your specific analysis tool.
+    # For example, eslint or tslint.
+    echo "Running code analysis..."
+    npm run lint
   displayName: 'Code Analysis'
 
 # Add more steps for saving build artifacts, deploying, etc., as needed.
