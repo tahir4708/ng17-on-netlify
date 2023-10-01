@@ -36,10 +36,13 @@ import {TableModule} from "primeng/table";
 import {DropdownModule} from "primeng/dropdown";
 import {MessageModule} from "primeng/message";
 import {DeferModule} from "primeng/defer";
+import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
+import {PdfViewerModule} from "ng2-pdf-viewer";
 
 
 @NgModule({
-  declarations: [BrandsComponent, BrandsListComponent, ProductListComponent, ProductFormComponent, PurchaseOrderListComponent, PurchaseOrderFormComponent, SaleInvoiceFormComponent, SaleInvoiceListComponent, KcpBillFormComponent, KcpBillListComponent],
+  declarations:
+    [BrandsComponent, BrandsListComponent, ProductListComponent, ProductFormComponent, PurchaseOrderListComponent, PurchaseOrderFormComponent, SaleInvoiceFormComponent, SaleInvoiceListComponent, KcpBillFormComponent, KcpBillListComponent, PdfViewerComponent],
   imports: [
     CommonModule,
     InventoryRoutingModule,
@@ -65,7 +68,7 @@ import {DeferModule} from "primeng/defer";
     TableModule,
     DropdownModule,
     MessageModule,
-    DeferModule
+    DeferModule,
 
   ]
 })

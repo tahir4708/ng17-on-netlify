@@ -26,7 +26,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {TabViewModule} from "primeng/tabview";
 import {ButtonModule} from "primeng/button";
 import {DashboardDefaultModule} from "./pages/dashboard/dashboard-default/dashboard-default.module";
-
+import {PdfViewerComponent, PdfViewerModule} from 'ng2-pdf-viewer';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +57,7 @@ import {DashboardDefaultModule} from "./pages/dashboard/dashboard-default/dashbo
     ButtonModule,
     DashboardDefaultModule,
     InputTextModule,
+    PdfViewerModule
 
 
   ],
