@@ -23,6 +23,7 @@ steps:
     # Replace the comment and command with your specific analysis tool.
     # For example, eslint or tslint.
     echo "Running code analysis..."
+    npm install  # Make sure dependencies are installed
     npm run lint
   displayName: 'Code Analysis'
 
