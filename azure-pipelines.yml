@@ -13,6 +13,7 @@ steps:
 - script: |
     npm install -g @angular/cli --force
     npm install --force
+    npm run lint
     ng build --prod
   displayName: 'npm install and build'
 
