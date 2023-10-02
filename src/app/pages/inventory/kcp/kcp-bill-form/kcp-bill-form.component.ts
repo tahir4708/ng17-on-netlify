@@ -1,4 +1,4 @@
-import {Component, Injectable, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Injectable, OnInit, ViewChild} from '@angular/core';
 import {InventoryService} from "../../inventory-service.service";
 import {KcpBillFormModel} from "../model/kcp-bill-form.model";
 import {KcpBillLabourRateLinesModel} from "../model/kcp-bill-labour-rate-lines.model";
@@ -7,16 +7,17 @@ import {KcpBillPartsLinesModel} from "../model/kcp-bill-parts-lines.model";
 import {jqxGridComponent} from "jqwidgets-ng/jqxgrid";
 import {jqxInputComponent} from "jqwidgets-ng/jqxinput";
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import {forEach} from "@angular-devkit/schematics";
+import {DatePipe} from "@angular/common";
 
-
+import { MessageService } from 'primeng/api';
 
 
 @Component({
-
+  providers: [DatePipe,MessageService],
   selector: 'app-kcp-bill-form',
   templateUrl: './kcp-bill-form.component.html',
   styleUrls: ['./kcp-bill-form.component.scss']
@@ -36,8 +37,8 @@ export class KcpBillFormComponent implements OnInit {
     billNo: '',
     workOrderNo: '',
     date: new Date().toISOString().substring(0, 10),
-    SaleKcpBillPartsLines: [],
-    SaleKcpBillLabourLines: [],
+    saleKcpBillPartsLines: [],
+    saleKcpBillLabourLines: [],
     totalBill: 0
     // Other properties...
   };
@@ -51,15 +52,42 @@ export class KcpBillFormComponent implements OnInit {
   public base64: any;
   pdfData: any;
   private sanitizedPdfData: SafeResourceUrl;
+  private id: any;
+  private isAddMode: boolean;
+  private gridData: Array<any>;
 
   constructor(public service: InventoryService,
               public fb: FormBuilder,
               private router: Router,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private route: ActivatedRoute,
+              private ref: ChangeDetectorRef,
+              private datePipe: DatePipe,
+              private messageService: MessageService) {
 
 
   }
   ngOnInit() {
+
+    this.id = this.route.snapshot.params['id'];
+    console.log(this.id);
+    this.isAddMode = !this.id;
+    console.log(this.isAddMode);
+
+    if(this.id > 0 || this.isAddMode){
+      this.service.getKcpAllBillById(this.id).subscribe(x=>{
+
+        this.kcpBill = x.entity;
+        console.log(x.kcpBill);
+        this.fillgrid(x.entity.saleKcpBillPartsLines);
+        this.fillgridLabour((x.entity.saleKcpBillLabourLines))
+        console.log(x.entity);
+        this.formGroup.patchValue(x.entity);
+        console.log(this.formGroup.value);
+      })
+    }
+
+
     this.initTable();
 
     this.formGroup = this.fb.group({
@@ -73,6 +101,8 @@ export class KcpBillFormComponent implements OnInit {
       saleKcpBillLabourLines: this.fb.array([]),
       saleKcpBillPartsLines: this.fb.array([]),
     });
+    const formattedDate = this.datePipe.transform(this.kcpBill.date, 'yyyy-MM-dd');
+    this.formGroup.patchValue({ date: formattedDate });
 
   }
 
@@ -102,8 +132,8 @@ export class KcpBillFormComponent implements OnInit {
           transaction.product_price = this.dataTable.getcellvalue(row, 'perItemPrice');
           transaction.quantity = this.dataTable.getcellvalue(row, 'quantity');
           transaction.tax =newvalue;
-          const percentage = transaction.tax / 100;
-          const priceAfterTax = parseInt(transaction.product_price ) + parseFloat((percentage*transaction.product_price).toFixed(2));
+          const percentage = transaction.tax;
+          const priceAfterTax =  parseFloat((percentage*transaction.product_price).toFixed(2));
           const quantity = transaction.quantity;
           var total_price = priceAfterTax * quantity;
           this.dataTable.setcellvalue(row,'totalPrice',total_price);
@@ -239,8 +269,8 @@ export class KcpBillFormComponent implements OnInit {
   saveEntity(){
 
     if(this.kcpBill.id > 0){
-      this.kcpBill.SaleKcpBillLabourLines = this.labourRateDataTable.getrows();
-      this.kcpBill.SaleKcpBillPartsLines =this.dataTable.getrows();
+      this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
+      this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
       console.log(this.kcpBill);
 
       this.service.saveKcpBill(this.kcpBill).subscribe(x=> {
@@ -249,15 +279,20 @@ export class KcpBillFormComponent implements OnInit {
 
     }else{
 
-      this.kcpBill.SaleKcpBillLabourLines = this.labourRateDataTable.getrows();
-      this.kcpBill.SaleKcpBillPartsLines =this.dataTable.getrows();
+      this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
+      this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
       console.log(JSON.stringify(this.kcpBill) );
       this.service.saveKcpBill(this.kcpBill).subscribe(res=> {
+        if(res.entity){
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
+          this.service.downloadReport(res.entity).subscribe(response => {
+            this.base64 = response.base64;
 
-        this.service.downloadReport(res.entity).subscribe(response => {
-          this.base64 = response.base64;
-
-        });
+          });
+        }
+        else{
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+        }
       });
     }
   }
@@ -281,28 +316,36 @@ export class KcpBillFormComponent implements OnInit {
 
   deleteRow(value: any) {
     debugger;
-    if(value === 'part'){
-
+    if (value === 'part') {
       const selectedRows = this.dataTable.getselectedrowindexes();
-      selectedRows.forEach(rowIndex => {
-        // Perform your operations on each selected row here
-        const rowData = this.dataTable.getrowdata(rowIndex);
-        // rowData contains the data of the selected row
-        this.dataTable.deleterow(rowIndex);
-        console.log('Selected Row Data:', rowIndex);
-      });
-    }else{
-      const selectedRows = this.labourRateDataTable.getselectedrowindexes();
-      selectedRows.forEach(rowIndex => {
-        // Perform your operations on each selected row here
-        const rowData = this.labourRateDataTable.getrowdata(rowIndex);
-        // rowData contains the data of the selected row
-        this.labourRateDataTable.deleterow(rowIndex);
-        console.log('Selected Row Data:', rowIndex);
-      });
-    }
+      const reverseRows = selectedRows.slice().reverse();
 
+      for (let rowIndex of reverseRows) {
+        this.dataTable.deleterow(rowIndex);
+      }
+
+      // Update gridData to reflect the updated data source
+      this.gridData = this.dataTable.getrows();
+
+      // Refresh the jqxGrid
+      this.dataTable.refresh();
+    } else {
+      const selectedRows = this.labourRateDataTable.getselectedrowindexes();
+      const reverseRows = selectedRows.slice().reverse();
+
+      for (let rowIndex of reverseRows) {
+        this.labourRateDataTable.deleterow(rowIndex);
+      }
+
+      // Update gridData for the labourRateDataTable
+      this.gridData = this.labourRateDataTable.getrows();
+
+      // Refresh the labourRateDataTable
+      this.labourRateDataTable.refresh();
+    }
   }
+
+
 
 
 
@@ -323,5 +366,32 @@ export class KcpBillFormComponent implements OnInit {
   CancelPdf() {
     this.base64 =null;
     this.pdfDataReceived = false;
+  }
+  fillgridLabour(gridData){
+
+    this.ref.detectChanges();
+    if(this.labourRateDataTable !== undefined){
+      console.log(gridData);
+      (this.labourRateDataTable.source() as any)._source.localdata = gridData;
+      this.labourRateDataTable.updatebounddata();
+      this.labourRateDataTable.refresh();
+      if(this.labourRateDataTable.getrows().length > 0){
+        this.labourRateDataTable.getselectedrowindexes();
+      }
+    }
+  }
+
+  fillgrid(gridData){
+
+    this.ref.detectChanges();
+    if(this.dataTable !== undefined){
+      console.log(gridData);
+      (this.dataTable.source() as any)._source.localdata = gridData;
+      this.dataTable.updatebounddata();
+      this.dataTable.refresh();
+      if(this.dataTable.getrows().length > 0){
+        this.dataTable.getselectedrowindexes();
+      }
+    }
   }
 }

@@ -38,6 +38,7 @@ import {MessageModule} from "primeng/message";
 import {DeferModule} from "primeng/defer";
 import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
 import {PdfViewerModule} from "ng2-pdf-viewer";
+import {ToastModule} from "primeng/toast";
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import {PdfViewerModule} from "ng2-pdf-viewer";
     DropdownModule,
     MessageModule,
     DeferModule,
+    ToastModule
 
   ]
 })

@@ -1,3 +1,5 @@
+
+<p-toast></p-toast>
 <div *ngIf="!base64">
   <app-card>
     <div class="form-group row">
@@ -27,6 +29,7 @@
         <div class="field">
           <label class="p-float-label" for="date">Date</label>
           <input type="date" class="p-inputtext large-input" id="date" [(ngModel)]="kcpBill.date" required autofocus />
+
           <!-- <small class="p-error" *ngIf="submitted && !message.question">Date is required.</small> -->
         </div>
       </div>
@@ -35,10 +38,10 @@
   <app-card>
     <p-button type="button" icon="pi pi-plus" (onClick)="addRowPartLine()" styleClass="p-button-text"></p-button>
     <p-button type="button" icon="pi pi-minus" (onClick)="deleteRow('part')" styleClass="p-button-text"></p-button>
-    <jqxGrid #dataTable   (onCellvaluechanged)="OnRowSelect($event)"   [height]="'50%'"  [width]="'100%'"
-             [source]="dataAdapter" [columns]="columns" (onRowdoubleclick)="onRowDobleClick($event)"
-             (onCellendedit)="calculatePartsBill()"
-             [theme]="'office'" [sortable]="true"  [filterable]="true" [editable]="true" [selectionmode]="'checkbox'" >
+    <jqxGrid #dataTable        [width]="'100%'"
+             [source]="dataAdapter" [columns]="columns"
+             (onCellendedit)="calculatePartsBill()" [autoheight]='true'
+             [theme]="'office'" [sortable]="true"  [filterable]="true" [editable]="true" [selectionmode]='"multiplerows"' >
     </jqxGrid>
     <div class="form-group row" style="padding-top: 2rem;">
       <div class="col-md-12 d-flex justify-content-end">
@@ -55,10 +58,10 @@
   <app-card>
     <p-button type="button" icon="pi pi-plus" (onClick)="addRowLabourRateLine()" styleClass="p-button-text"></p-button>
     <p-button type="button" icon="pi pi-minus" (onClick)="deleteRow('Labour')" styleClass="p-button-text"></p-button>
-    <jqxGrid #labourRateDataTable   (onCellvaluechanged)="OnRowSelect($event)"   [height]="'50%'"  [width]="'100%'"
+    <jqxGrid #labourRateDataTable   (onCellvaluechanged)="OnRowSelect($event)" [autoheight]='true'  [width]="'100%'"
              [source]="dataAdapter" [columns]="labourRateColumns" (onRowdoubleclick)="onRowDobleClick($event)"
              [theme]="'office'" [sortable]="true" (onCellendedit)="calculateCurrentRateSum()"
-             [filterable]="true" [editable]="true" [selectionmode]="'checkbox'" >
+             [filterable]="true" [editable]="true" [selectionmode]='"multiplerows"' >
     </jqxGrid>
     <div class="form-group row" style="padding-top: 2rem;">
       <div class="col-md-12 d-flex justify-content-end">
@@ -75,10 +78,10 @@
 
     <div class="form-group row" style="padding-top: 2rem;">
       <div class="col-md-6 d-flex justify-content-start">
-        <div class="field">
+        <div  class="field">
           <jqxButton class="btn btn-primary" (click)="saveEntity()" >Save</jqxButton>
         </div>
-        <div class="field" style="padding-left: 2rem">
+        <div *ngIf="!id" class="field" style="padding-left: 2rem">
           <jqxButton class="btn btn-secondary" (click)="resetForm()" >Reset</jqxButton>
           <!-- <small class="p-error" *ngIf="submitted && !message.question">Bill No is required.</small> -->
         </div>

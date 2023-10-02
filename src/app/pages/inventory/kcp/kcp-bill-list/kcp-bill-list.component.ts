@@ -2,6 +2,9 @@ import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angu
 import {InventoryService} from "../../inventory-service.service";
 import {jqxGridComponent} from "jqwidgets-ng/jqxgrid";
 import {jqxPanelComponent} from "jqwidgets-ng/jqxpanel";
+import {ActivatedRoute, Router} from "@angular/router";
+import {DomSanitizer} from "@angular/platform-browser";
+import {TableComponentComponent} from "../../../admin/framework/table-component/table-component.component";
 
 @Component({
   selector: 'app-kcp-bill-list',
@@ -19,7 +22,10 @@ export class KcpBillListComponent implements OnInit {
   source: any;
 
   constructor(public service: InventoryService,
-              private ref: ChangeDetectorRef) { }
+              private ref: ChangeDetectorRef,
+              private router: Router,
+              private sanitizer: DomSanitizer,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.service.getKcpAllBills().subscribe(response => {
@@ -49,25 +55,23 @@ export class KcpBillListComponent implements OnInit {
         { text: 'Total Parts Bill', dataField: 'totalPartsBill', width: '15%'},
         { text: 'Total Labour Bill', dataField: 'totalLabourBill', width: '15%' },
         { text: 'Date', dataField: 'date', width: '15%' },
-        { text: 'Action', dataField: 'Action', width: '15%',
-          cellsRenderer: (row, column, value) => {
-            const buttonContainerStyle = `
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    `;
+        {
+          text: 'Action',
+          dataField: 'Action',
+          width: '15%',
+          cellsRenderer: (row: any): string => {
+            const id = this.dataTable.getcellvalue(row, 'id');
+            const navigation = '/inventory/kcp-bill-form';
 
-            const editButton = `
-      <div style="${buttonContainerStyle}">
-        <button style="background-color: #007bff; color: white; padding: 5px 10px; border: none; border-radius: 4px; margin-right: 5px; cursor: pointer;" onclick="editItem(${value})">Edit</button>
-        <button style="background-color: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer;" onclick="deleteItem(${value})">Delete</button>
-      </div>
+            return `
+        <a href="${navigation}/${id}" style="text-decoration: none; color: #007bff; display: inline-block;">
+            <i class="pi pi-pencil" style="margin-left: 50px;; margin-top: 10px;"></i>
+        </a>
     `;
-
-            return editButton;
           },
-        },
+
+        }
+
       ];
 
 
@@ -77,13 +81,12 @@ export class KcpBillListComponent implements OnInit {
     });
   }
 
-  editItem(id: number) {
-    // Handle edit action here using the item's ID
-    // For example, you can open a modal or navigate to an edit page
-    console.log('Editing item with ID:', id);
+  public editItem(id: number) {
+    console.log(11);
+    this.router.navigate(['/inventory/kcp-bill-form/'+id])
   }
 
-  deleteItem(id: number) {
+  public  deleteItem(id: number) {
     // Handle delete action here using the item's ID
     // For example, you can confirm the deletion and send an API request
     console.log('Deleting item with ID:', id);

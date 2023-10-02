@@ -54,6 +54,9 @@ const routes: Routes = [
     path: 'kcp-bill-form',
     component: KcpBillFormComponent,
   },{
+    path: 'kcp-bill-form/:id',
+    component: KcpBillFormComponent,
+  },{
     path: 'kcp-bill-list',
     component: KcpBillListComponent,
   },

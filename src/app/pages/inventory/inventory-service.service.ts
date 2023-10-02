@@ -14,6 +14,7 @@ const deleteBrandById: string = environment.API_BASE_URL + '/deleteBrandById';
 const ENDPOINT_GET_KCP_LABOUR_RATES: string = environment.API_BASE_URL + '/SearchWorkItem';
 const ENDPOINT_SAVE_KCP_BILLS: string = environment.API_BASE_URL + '/saveKcpBill';
 const ENDPOINt_GET_KCP_BILLS: string = environment.API_BASE_URL + '/api/Inventory/listOfKcpBills';
+const ENDPOINt_GET_KCP_BILL_BY_ID: string = environment.API_BASE_URL + '/api/Inventory/GetKcpBillById';
 const ENDPOINt_DOWNLOAD_REPORTS: string =  'http://localhost:8080/jasperpdf';
 const httpOptions = {
   headers: new HttpHeaders({
@@ -55,6 +56,10 @@ export class InventoryService {
   }
   downloadReport(id):Observable<any>{
     return this.http.get(ENDPOINt_DOWNLOAD_REPORTS+'/'+id, httpOptions)
+  }
+
+  getKcpAllBillById(id):Observable<any>{
+    return this.http.get(ENDPOINt_GET_KCP_BILL_BY_ID+'?id='+id, httpOptions)
   }
 
 }
