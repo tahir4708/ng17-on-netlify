@@ -23034,3 +23034,16 @@ body.dark {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* CSS for the blur effect */
+.blur-background {
+  filter: blur(4px); /* Adjust the blur strength as needed */
+}
+
+/* CSS for centering the spinner */
+.spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* Make sure the spinner is above other content */
+}

@@ -16,6 +16,7 @@ export class BasicLoginComponent implements OnInit {
   public loginForm: UntypedFormGroup;
   public user_data: string;
   public lovmap: lovmap[];
+    spinner: any;
   constructor(
     private toast: ToastrService,
     private router: Router,
@@ -33,18 +34,14 @@ export class BasicLoginComponent implements OnInit {
     document.querySelector('body').setAttribute('themebg-pattern', 'theme1');
   }
   login() {
-    console.log('email: ' + this.loginForm.controls.email.value);
-    console.log('email: ' + this.loginForm.controls.password.value);
+      this.spinner=true;
     this.login_request = <Login_request> this.loginForm.value;
 
-    console.log(this.login_request);
     this.service.save(this.login_request).subscribe((data) => {
         sessionStorage.clear();
         sessionStorage.setItem('user', JSON.stringify(data.entity));
         sessionStorage.setItem('token', data.keyValuePairs.token);
-        console.log(sessionStorage);
-        console.log(this.toast.success("test","test"));
-
+        this.spinner=false;
       // tslint:disable-next-line:no-shadowed-variable
         this.router.navigate(['/dashboard']);
 

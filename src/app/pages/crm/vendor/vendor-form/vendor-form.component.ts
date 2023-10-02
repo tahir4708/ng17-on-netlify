@@ -127,7 +127,7 @@ export class VendorFormComponent implements OnInit {
       this.entity = <INV_PRODUCTS>this.formGroup.value;
       this.entity.modified_by = this.currentUser.user_id;
       this.entity.modified_date = this.datePipe.transform(Date.now(),'yyyy-MM-ddThh:mm:hh');
-      console.log(this.entity);
+      
       this.service.save(this.entity).subscribe((data) => {
 
         if (data.entity) {
@@ -149,7 +149,7 @@ export class VendorFormComponent implements OnInit {
       this.entity.created_date = this.datePipe.transform(Date.now(),'yyyy-MM-ddThh:mm:hh');
       this.entity.modified_date = this.datePipe.transform(Date.now(),'yyyy-MM-ddThh:mm:hh');
       this.entity.modified_by = this.currentUser.user_id;
-      console.log(this.entity);
+      
       this.service.save(this.entity).subscribe((data) => {
         if (data.entity) {
           this.toastr.success('Record Saved', 'Success')

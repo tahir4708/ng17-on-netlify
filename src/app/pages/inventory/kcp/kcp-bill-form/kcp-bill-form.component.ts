@@ -53,8 +53,9 @@ export class KcpBillFormComponent implements OnInit {
   pdfData: any;
   private sanitizedPdfData: SafeResourceUrl;
   private id: any;
-  private isAddMode: boolean;
+  private isAddMode: boolean=false;
   private gridData: Array<any>;
+  spinner: boolean = false;
 
   constructor(public service: InventoryService,
               public fb: FormBuilder,
@@ -70,20 +71,17 @@ export class KcpBillFormComponent implements OnInit {
   ngOnInit() {
 
     this.id = this.route.snapshot.params['id'];
-    console.log(this.id);
+    
     this.isAddMode = !this.id;
-    console.log(this.isAddMode);
+    
 
-    if(this.id > 0 || this.isAddMode){
+    if(this.id > 0 && this.id != undefined){
       this.service.getKcpAllBillById(this.id).subscribe(x=>{
 
         this.kcpBill = x.entity;
-        console.log(x.kcpBill);
         this.fillgrid(x.entity.saleKcpBillPartsLines);
         this.fillgridLabour((x.entity.saleKcpBillLabourLines))
-        console.log(x.entity);
         this.formGroup.patchValue(x.entity);
-        console.log(this.formGroup.value);
       })
     }
 
@@ -118,7 +116,7 @@ export class KcpBillFormComponent implements OnInit {
       },
       { text: 'Tax %', dataField: 'taxPercentage',
         cellbeginedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void => {
-          console.log(row);
+          
 
           const  transaction: any = {};
           transaction.product_price = this.dataTable.getcellvalue(row, 'perItemPrice');
@@ -165,14 +163,14 @@ export class KcpBillFormComponent implements OnInit {
               selectedItem = event.args.item;
 
               this.labourRateDataTable.setcellvalue(row, 'description', selectedItem.label); // Set description to the label
-              console.log(this.labourRateDataTable.getcellvalue(row,'description'));
+              
               this.labourRateDataTable.setcellvalue(row, 'workItemId', selectedItem.originalItem.value);
               this.labourRateDataTable.setcellvalue(row, 'labourRate', selectedItem.originalItem.rate);
             }.bind(this)); // Bind 'this' to the event handler function
           });
         }.bind(this),
         cellendedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void => {
-          console.log(this.dataTable.getcellvalue(row,'description'));
+          
         }
       },
 
@@ -267,21 +265,19 @@ export class KcpBillFormComponent implements OnInit {
   }
 
   saveEntity(){
-
+    this.spinner=true;
     if(this.kcpBill.id > 0){
       this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
       this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
-      console.log(this.kcpBill);
-
+     
       this.service.saveKcpBill(this.kcpBill).subscribe(x=> {
-        console.log(x);
       });
+      this.spinner=false;
 
     }else{
 
       this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
       this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
-      console.log(JSON.stringify(this.kcpBill) );
       this.service.saveKcpBill(this.kcpBill).subscribe(res=> {
         if(res.entity){
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
@@ -291,6 +287,7 @@ export class KcpBillFormComponent implements OnInit {
           });
         }
         else{
+          this.spinner=false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
         }
       });
@@ -356,11 +353,12 @@ export class KcpBillFormComponent implements OnInit {
 
       // Update the flag to indicate that the response has been received
       this.pdfDataReceived = true;
-
+      this.spinner = false;
       return sanitizedDataUrl;
     } else {
       return '';
     }
+
   }
 
   CancelPdf() {
@@ -371,7 +369,6 @@ export class KcpBillFormComponent implements OnInit {
 
     this.ref.detectChanges();
     if(this.labourRateDataTable !== undefined){
-      console.log(gridData);
       (this.labourRateDataTable.source() as any)._source.localdata = gridData;
       this.labourRateDataTable.updatebounddata();
       this.labourRateDataTable.refresh();
@@ -385,7 +382,6 @@ export class KcpBillFormComponent implements OnInit {
 
     this.ref.detectChanges();
     if(this.dataTable !== undefined){
-      console.log(gridData);
       (this.dataTable.source() as any)._source.localdata = gridData;
       this.dataTable.updatebounddata();
       this.dataTable.refresh();

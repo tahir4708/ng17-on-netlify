@@ -29,7 +29,6 @@ export class BasicLoginService {
     return this.http.get(ENDPOINT_GET_MENU, httpOptions);
   }
   GetDefaultValues(component: string): Observable<any> {
-    console.log('data');
     return this.http.get(ENDPOINT_DEFAULT_VALUES + '?component=' + component, httpOptions);
   }
 }

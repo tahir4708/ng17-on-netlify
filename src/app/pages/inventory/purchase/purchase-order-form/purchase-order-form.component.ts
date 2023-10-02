@@ -330,7 +330,7 @@ export class PurchaseOrderFormComponent implements OnInit {
       this.entity.remaining_bill_amount = this.remaingAmountToBePaid;
 
       //this.entity.detail = this.formGroup.controls.purchase_order_lines.getRawValue();
-      console.log(this.entity);
+      
       this.service.save(this.entity).subscribe((data) => {
         if (data.entity) {
           this.toastr.success('Record Saved', 'Success')

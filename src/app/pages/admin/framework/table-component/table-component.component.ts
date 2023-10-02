@@ -13,7 +13,6 @@ export class TableComponentComponent{
   @Input() navigation: any;
   @Input() id : any;
   editItem() {
-    console.log('navigation');
     this.router.navigate([this.navigation+'/'+this.id]);
     // Your edit logic here
   }

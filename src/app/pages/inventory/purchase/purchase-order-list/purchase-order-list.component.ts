@@ -156,7 +156,6 @@ export class PurchaseOrderListComponent implements OnInit {
     this.service.getEntityById(this.purchase_id)
       .subscribe(x => {
         this.product =   x.entity[0];
-        console.log(x.entity[0]);
         this.product.deleted = true;
         return this.service.save(this.product).subscribe((data) => {
           this.service.entityList().subscribe((data) => {
@@ -167,7 +166,6 @@ export class PurchaseOrderListComponent implements OnInit {
           });
         });
       });
-    console.log(this.product);
 
   };
 

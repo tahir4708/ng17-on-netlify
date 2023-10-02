@@ -147,7 +147,7 @@ export class CommonService {
   }
 
   public generateGridDropDownList = (container, data, labelAttribute, valueAttribute, dataFields?: any[]) => {
-    console.log(container);
+    
     if (labelAttribute === undefined) {
       labelAttribute = 'label';
     }

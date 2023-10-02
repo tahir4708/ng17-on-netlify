@@ -13,3 +13,52 @@
 ::ng-deep .p-table .p-headercell {
   border: 1px solid #ccc; /* You can adjust the border style and color */
 }
+
+.container {
+  padding: 20px;
+}
+
+.app-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+
+.blur-background {
+  filter: blur(3px);
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.spinner {
+  width: 4rem;
+  height: 4rem;
+}
+
+h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+}
+
+/* Add more custom styles as needed */

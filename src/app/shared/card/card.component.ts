@@ -54,7 +54,6 @@ export class CardComponent implements OnInit {
   }
 
   addTask() {
-    console.log(this.targetForComponent);
     this.router.navigate([this.targetForComponent]);
   }
 }
