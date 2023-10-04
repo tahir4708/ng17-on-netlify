@@ -37,6 +37,8 @@
     "@popperjs/core": "^2.11.5",
     "@rxweb/types": "^1.0.8",
     "@syncfusion/ej2-angular-treegrid": "^20.2.46-ngcc",
+    "ag-grid-angular": "^30.2.0",
+    "ag-grid-community": "^30.2.0",
     "angular-device-information": "^1.0.2",
     "angular2-chartjs": "^0.5.1",
     "angular2-notifications": "^12.0.0",

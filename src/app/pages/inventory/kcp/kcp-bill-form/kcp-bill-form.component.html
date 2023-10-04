@@ -47,7 +47,7 @@
     <jqxGrid #dataTable (onRowselect)="OnRowSelect($event)" [width]="'100%'"
              [source]="dataAdapter" [columns]="columns"
              (onCellendedit)="calculatePartsBill()" [autoheight]='true'
-             [theme]="'office'" [sortable]="true" [filterable]="true" [editable]="true" [selectionmode]='"multiplerows"' >
+             [theme]="'office'" [sortable]="true" [filterable]="true" [editable]="true" [selectionmode]="'checkbox'" >
     </jqxGrid>
     <div class="form-group row" style="padding-top: 2rem;">
       <div class="col-md-12 d-flex justify-content-end">
@@ -70,7 +70,7 @@
     <jqxGrid #labourRateDataTable (onCellvaluechanged)="OnRowSelect($event)" [autoheight]='true' [width]="'100%'"
              [source]="dataAdapter" [columns]="labourRateColumns" (onRowdoubleclick)="onRowDobleClick($event)"
              [theme]="'office'" [sortable]="true" (onCellendedit)="calculateCurrentRateSum()"
-             [filterable]="true" [editable]="true" [selectionmode]='"multiplerows"' >
+             [filterable]="true" [editable]="true" [selectionmode]="'checkbox'" >
     </jqxGrid>
     <div class="form-group row" style="padding-top: 2rem;">
       <div class="col-md-12 d-flex justify-content-end">

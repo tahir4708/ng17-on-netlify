@@ -56,6 +56,7 @@ export class KcpBillFormComponent implements OnInit {
   private isAddMode: boolean=false;
   private gridData: Array<any>;
   spinner: boolean = false;
+  lovMapLabourRates: any;
 
   constructor(public service: InventoryService,
               public fb: FormBuilder,
@@ -71,9 +72,12 @@ export class KcpBillFormComponent implements OnInit {
   ngOnInit() {
 
     this.id = this.route.snapshot.params['id'];
-    
+
     this.isAddMode = !this.id;
-    
+    this.service.getKcpLabourRates().subscribe(x => {
+      this.lovMapLabourRates = x.entity;
+
+    });
 
     if(this.id > 0 && this.id != undefined){
       this.service.getKcpAllBillById(this.id).subscribe(x=>{
@@ -116,7 +120,7 @@ export class KcpBillFormComponent implements OnInit {
       },
       { text: 'Tax %', dataField: 'taxPercentage',
         cellbeginedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void => {
-          
+
 
           const  transaction: any = {};
           transaction.product_price = this.dataTable.getcellvalue(row, 'perItemPrice');
@@ -137,6 +141,7 @@ export class KcpBillFormComponent implements OnInit {
           this.dataTable.setcellvalue(row,'totalPrice',total_price);
         }},
       { text: 'Total', dataField: 'totalPrice' ,editable: false },
+      { text: 'deleted', dataField: 'deleted' ,hidden: 'true' },
     ];
 
     this.labourRateColumns = [
@@ -148,39 +153,57 @@ export class KcpBillFormComponent implements OnInit {
         displayfield: 'label',
         columntype: 'dropdownlist',
         createeditor: function (row, value, editor) {
-          let selectedItem; // Declare selectedItem outside the scope of the 'select' event handler
-          this.service.getKcpLabourRates().subscribe(x => {
-            editor.jqxDropDownList({
-              filterable: true,
-              searchMode: 'containsignorecase',
-              source: x.entity,
-              displayMember: 'label',
-              valueMember: 'label'
-            });
+          if (!editor) {
+            // Check if editor is undefined or falsy
+            return;
+          }
 
-            // Add an event listener for the 'select' event
-            editor.on('select', function (event) {
-              selectedItem = event.args.item;
+          const dropDownListOptions = {
+            filterable: true,
+            searchMode: 'containsignorecase',
+            source: this.lovMapLabourRates, // Use your source directly
+            displayMember: 'label',
+            valueMember: 'label'
+          };
 
-              this.labourRateDataTable.setcellvalue(row, 'description', selectedItem.label); // Set description to the label
-              
-              this.labourRateDataTable.setcellvalue(row, 'workItemId', selectedItem.originalItem.value);
-              this.labourRateDataTable.setcellvalue(row, 'labourRate', selectedItem.originalItem.rate);
-            }.bind(this)); // Bind 'this' to the event handler function
-          });
+          const selectEventHandler = function (event) {
+            const selectedItem = event.args.item;
+
+            this.labourRateDataTable.setcellvalue(row, 'description', selectedItem.label);
+            this.labourRateDataTable.setcellvalue(row, 'workItemId', selectedItem.originalItem.value);
+            this.labourRateDataTable.setcellvalue(row, 'labourRate', selectedItem.originalItem.rate);
+          }.bind(this);
+
+          // Remove the 'select' event handler if it's already added
+          if (editor.off) {
+            editor.off('select', selectEventHandler);
+          }
+
+          // Add the 'select' event handler
+          if (editor.on) {
+            editor.on('select', selectEventHandler);
+
+            // Create the jqxDropDownList with options
+            editor.jqxDropDownList(dropDownListOptions);
+          }
         }.bind(this),
+
+
         cellendedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void => {
-          
+          // Your cellendedit logic here
         }
       },
 
 
+
       { text: 'Rate', dataField: 'labourRate' },
+      { text: 'deleted', dataField: 'deleted', hidden: 'true' },
     ];
   }
 
   addRowPartLine() {
     const row: KcpBillPartsLinesModel = {
+      deleted: 0,
       id: undefined,
       perItemPrice: undefined,
       productName: undefined,
@@ -195,6 +218,7 @@ export class KcpBillFormComponent implements OnInit {
   addRowLabourRateLine() {
 
     const newRow: KcpBillLabourRateLinesModel = {
+      deleted: 0,
       id: 0,
       workItemId: 0,
       description: [''],
@@ -240,37 +264,24 @@ export class KcpBillFormComponent implements OnInit {
     this.kcpBill.totalBill = this.kcpBill.totalPartsBill + this.kcpBill.totalLabourBill;
   }
 
-  addLabourBillLines(): void{
-    (this.formGroup.controls.saleKcpBillLabourLines as FormArray).push(
-        this.fb.group({
-          id:[0],
-          workItemId:[0],
-          description: [''],
-          labourRate:[0]
-        })
-    )
-  }
-
-  addPartsBillLines(): void{
-    (this.formGroup.controls.saleKcpBillLabourLines as FormArray).push(
-        this.fb.group({
-          id:[0],
-          productName:[''],
-          quantity: [0],
-          taxPercentage:[0],
-          perItemPrice:[0],
-          totalPrice:[0]
-        })
-    )
-  }
-
   saveEntity(){
     this.spinner=true;
     if(this.kcpBill.id > 0){
       this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
       this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
-     
+
       this.service.saveKcpBill(this.kcpBill).subscribe(x=> {
+        if(x.entity){
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Record Updated Successfully' });
+          this.service.downloadReport(x.entity).subscribe(response => {
+            this.base64 = response.base64;
+
+          });
+        }
+        else{
+          this.spinner=false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something Went Wrong' });
+        }
       });
       this.spinner=false;
 
@@ -296,7 +307,7 @@ export class KcpBillFormComponent implements OnInit {
 
   resetForm() {
     // Clear form fields by resetting the form group
-    this.formGroup.reset();
+    this.kcpBill=null;
 
     // Clear data bound to the grids
     // Assuming you have references to your jqxGrid instances
@@ -313,34 +324,67 @@ export class KcpBillFormComponent implements OnInit {
 
   deleteRow(value: any) {
     debugger;
-    if (value === 'part') {
-      const selectedRows = this.dataTable.getselectedrowindexes();
-      const reverseRows = selectedRows.slice().reverse();
 
-      for (let rowIndex of reverseRows) {
-        this.dataTable.deleterow(rowIndex);
-      }
+    if(value === 'part'){
+      let values = this.dataTable.selectedrowindexes().reverse();
+      console.log(values);
+      let rowUid = []; // Initialize rowUid as an array
 
-      // Update gridData to reflect the updated data source
-      this.gridData = this.dataTable.getrows();
+      (async () => {
+        try {
+          console.log(values.length);
+          for (let i = 0; i < values.length; i++) {
+            const rowData = await this.dataTable.getrowdata(values[i]);
 
-      // Refresh the jqxGrid
-      this.dataTable.refresh();
-    } else {
-      const selectedRows = this.labourRateDataTable.getselectedrowindexes();
-      const reverseRows = selectedRows.slice().reverse();
+            rowUid.push(rowData.uid);
+          }
 
-      for (let rowIndex of reverseRows) {
-        this.labourRateDataTable.deleterow(rowIndex);
-      }
+          for (let i = 0; i < rowUid.length; i++) {
+            this.dataTable.deleterow(rowUid[i]);
 
-      // Update gridData for the labourRateDataTable
-      this.gridData = this.labourRateDataTable.getrows();
+            if(this.dataTable.getcellvalue(i,'id')){
+              this.dataTable.setcellvalue(i,'deleted',1);
+              console.log(this.dataTable.getrowdata(i));
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      })();
+      this.dataTable.clearselection();
+    }else{
+      let values = this.labourRateDataTable.selectedrowindexes().reverse();
+      console.log(values);
+      let rowUid = []; // Initialize rowUid as an array
 
-      // Refresh the labourRateDataTable
-      this.labourRateDataTable.refresh();
+      (async () => {
+        try {
+          console.log(values.length);
+          for (let i = 0; i < values.length; i++) {
+            const rowData = await this.labourRateDataTable.getrowdata(values[i]);
+            rowUid.push(rowData.uid);
+          }
+
+          for (let i = 0; i < rowUid.length; i++) {
+            this.labourRateDataTable.deleterow(rowUid[i]);
+            if(this.labourRateDataTable.getcellvalue(i,'id')){
+              this.labourRateDataTable.setcellvalue(i,'deleted',1);
+              console.log(this.labourRateDataTable.getrowdata(i));
+            }
+
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      })();
+      this.labourRateDataTable.clearselection();
     }
+
+
+
   }
+
+
 
 
 
