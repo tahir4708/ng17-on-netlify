@@ -5,12 +5,12 @@ export interface KcpBillFormModel{
   id: any | 0;
   billNo: any | '';
   workOrderNo: any | '';
+  vehicleNo: any | '';
   date: any | '';
-  kcpBillPartsLines: KcpBillPartsLinesModel[];
-  kcpBillLabourRatesLines: KcpBillLabourRateLinesModel[];
-  partsLinesTotal: any | 0;
-  labourRatesLinesTotal: any | 0;
   totalBill: any | 0;
   totalPartsBill: any | 0;
   totalLabourBill : any|0;
+
+  saleKcpBillLabourLines: KcpBillPartsLinesModel[];
+  saleKcpBillPartsLines: KcpBillLabourRateLinesModel[];
 }

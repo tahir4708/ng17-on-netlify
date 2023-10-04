@@ -5,13 +5,15 @@ import { MenuFormComponent } from './menu/menu-form/menu-form.component';
 import {TreeGridModule} from "@syncfusion/ej2-angular-treegrid";
 import {AdminRoutingModule} from "./admin-routing.module";
 import {TreeTableModule} from "primeng/treetable";
+import { TableComponentComponent } from './framework/table-component/table-component.component';
 
 
 
 @NgModule({
   declarations: [
     MenuListComponent,
-    MenuFormComponent
+    MenuFormComponent,
+    TableComponentComponent
   ],
   imports: [
     CommonModule,

@@ -1,10 +1,7 @@
 export interface KcpBillLabourRateLinesModel {
     id: any;
     workItemId: any;
-    workItemName: any;
-    vehicleCategoryId: any;
-    vehicleCategoryName: any;
-    vehicleTypeId: any;
-    vehicleTypeName: any;
+    description: any;
     labourRate: any;
+    deleted: any;
 }

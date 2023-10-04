@@ -287,9 +287,7 @@ export class AdminComponent implements OnInit {
     return this.loginService.get_menu().subscribe((data) => {
       //this.Menu = data.entity;
       this.Menu = data.entity;
-      console.log(this.Menu);
       this.Menu.forEach(function (value: { main: any; }) {
-        console.log(value.main);
       });
     });
   }

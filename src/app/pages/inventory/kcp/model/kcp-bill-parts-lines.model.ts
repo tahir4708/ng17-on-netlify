@@ -5,4 +5,5 @@ export interface KcpBillPartsLinesModel{
   taxPercentage: any;
   perItemPrice: any;
   totalPrice: any;
+  deleted: any;
 }

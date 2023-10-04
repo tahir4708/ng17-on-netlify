@@ -49,18 +49,14 @@ export class ContactFormComponent implements OnInit {
               private SpinnerService: NgxSpinnerService,
   ) {
     this.componentName = this.route.snapshot.routeConfig.component.name;
-    console.log(this.componentName);
   }
 
   ngOnInit() {
     debugger;
     this.id = this.route.snapshot.params['id'];
-    console.log(this.id);
     this.isAddMode = !this.id;
-    console.log(this.isAddMode);
     this.currentUser = JSON.parse(sessionStorage.getItem('user')) ;
     this.service.lovMap().subscribe((data) => {
-      console.log(data.lovmap);
       this.lovMapContactType = data.lovmap.ContactType;
       this.lovMapCountry = data.lovmap.Country;
       this.lovMapCity = data.lovmap.City;
@@ -108,7 +104,7 @@ export class ContactFormComponent implements OnInit {
       this.entity.contact_title = this.entity.first_name + ' '+this.entity.last_name;
       this.entity.modified_by = this.currentUser.user_id;
       this.entity.modified_date = this.datePipe.transform(Date.now(),'yyyy-MM-ddThh:mm:hh');
-      console.log(this.entity);
+      
       this.service.save(this.entity).subscribe((data) => {
 
         if (data.entity) {
@@ -131,7 +127,7 @@ export class ContactFormComponent implements OnInit {
       this.entity.created_date = this.datePipe.transform(Date.now(),'yyyy-MM-ddThh:mm:hh');
       this.entity.modified_date = this.datePipe.transform(Date.now(),'yyyy-MM-ddThh:mm:hh');
       this.entity.modified_by = this.currentUser.user_id;
-      console.log(this.entity);
+      
       this.service.save(this.entity).subscribe((data) => {
         if (data.entity) {
           this.toastr.success('Record Saved', 'Success')

@@ -10,6 +10,7 @@ import {SaleInvoiceListComponent} from "./sale/sale-invoice/sale-invoice-list/sa
 import {SaleInvoiceFormComponent} from "./sale/sale-invoice/sale-invoice-form/sale-invoice-form.component";
 import {KcpBillFormComponent} from "./kcp/kcp-bill-form/kcp-bill-form.component";
 import {KcpBillListComponent} from "./kcp/kcp-bill-list/kcp-bill-list.component";
+import {PdfViewerComponent} from "./pdf-viewer/pdf-viewer.component";
 
 
 const routes: Routes = [
@@ -53,9 +54,16 @@ const routes: Routes = [
     path: 'kcp-bill-form',
     component: KcpBillFormComponent,
   },{
+    path: 'kcp-bill-form/:id',
+    component: KcpBillFormComponent,
+  },{
     path: 'kcp-bill-list',
     component: KcpBillListComponent,
   },
+  {
+  path:'pdf-viewer/:base64',
+    component: PdfViewerComponent
+  }
 
 ];
 

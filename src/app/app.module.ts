@@ -16,7 +16,6 @@ import {InventoryModule} from './pages/inventory/inventory.module';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ToastrModule} from "ngx-toastr";
 import {DatePipe} from "@angular/common";
-import {NgxSpinnerModule} from "ngx-spinner";
 import {InputTextModule} from "primeng/inputtext";
 import { ReactiveFormsModule } from '@angular/forms';
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
@@ -26,7 +25,8 @@ import {MatSelectModule} from "@angular/material/select";
 import {TabViewModule} from "primeng/tabview";
 import {ButtonModule} from "primeng/button";
 import {DashboardDefaultModule} from "./pages/dashboard/dashboard-default/dashboard-default.module";
-
+import {PdfViewerComponent, PdfViewerModule} from 'ng2-pdf-viewer';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +45,6 @@ import {DashboardDefaultModule} from "./pages/dashboard/dashboard-default/dashbo
       timeOut: 1000,
       positionClass: 'toast-top-right'
     }), // ToastrModule added
-    NgxSpinnerModule,
     InputTextModule,
     ReactiveFormsModule,
     MatSelectModule,
@@ -57,6 +56,8 @@ import {DashboardDefaultModule} from "./pages/dashboard/dashboard-default/dashbo
     ButtonModule,
     DashboardDefaultModule,
     InputTextModule,
+    PdfViewerModule,
+    ProgressSpinnerModule,
 
 
   ],
