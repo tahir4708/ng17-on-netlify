@@ -20,7 +20,7 @@ const routes: Routes = [
         loadChildren: () => import('./pages/dashboard/dashboard-default/dashboard-default.module').then(m => m.DashboardDefaultModule)
       },{
         path: 'inventory',
-        // canActivate: [AuthGuard],
+         canActivate: [AuthGuard],
         loadChildren: () => import('./pages/inventory/inventory.module').then(m => m.InventoryModule)
       },{
         path: 'crm',

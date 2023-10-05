@@ -15,7 +15,7 @@ const ENDPOINT_GET_KCP_LABOUR_RATES: string = environment.API_BASE_URL + '/Searc
 const ENDPOINT_SAVE_KCP_BILLS: string = environment.API_BASE_URL + '/saveKcpBill';
 const ENDPOINt_GET_KCP_BILLS: string = environment.API_BASE_URL + '/api/Inventory/listOfKcpBills';
 const ENDPOINt_GET_KCP_BILL_BY_ID: string = environment.API_BASE_URL + '/api/Inventory/GetKcpBillById';
-const ENDPOINt_DOWNLOAD_REPORTS: string =  'http://localhost:8080/jasperpdf';
+const ENDPOINt_DOWNLOAD_REPORTS: string =  environment.JASPER_BASE_URL+'/jasperpdf';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'

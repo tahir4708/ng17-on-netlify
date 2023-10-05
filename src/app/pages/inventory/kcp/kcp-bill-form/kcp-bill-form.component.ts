@@ -14,6 +14,7 @@ import {forEach} from "@angular-devkit/schematics";
 import {DatePipe} from "@angular/common";
 
 import { MessageService } from 'primeng/api';
+import {NgxSpinnerService} from "ngx-spinner";
 
 
 @Component({
@@ -65,7 +66,8 @@ export class KcpBillFormComponent implements OnInit {
               private route: ActivatedRoute,
               private ref: ChangeDetectorRef,
               private datePipe: DatePipe,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private spinnerService: NgxSpinnerService) {
 
 
   }
@@ -75,17 +77,20 @@ export class KcpBillFormComponent implements OnInit {
 
     this.isAddMode = !this.id;
     this.service.getKcpLabourRates().subscribe(x => {
+      this.spinnerService.show();
       this.lovMapLabourRates = x.entity;
-
+      this.spinnerService.hide();
     });
 
     if(this.id > 0 && this.id != undefined){
+      this.spinnerService.show();
       this.service.getKcpAllBillById(this.id).subscribe(x=>{
 
         this.kcpBill = x.entity;
         this.fillgrid(x.entity.saleKcpBillPartsLines);
         this.fillgridLabour((x.entity.saleKcpBillLabourLines))
         this.formGroup.patchValue(x.entity);
+        this.spinnerService.hide();
       })
     }
 
@@ -265,7 +270,7 @@ export class KcpBillFormComponent implements OnInit {
   }
 
   saveEntity(){
-    this.spinner=true;
+    this.spinnerService.show();
     if(this.kcpBill.id > 0){
       this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
       this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
@@ -275,18 +280,16 @@ export class KcpBillFormComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Record Updated Successfully' });
           this.service.downloadReport(x.entity).subscribe(response => {
             this.base64 = response.base64;
-
+            this.spinnerService.hide();
           });
         }
         else{
-          this.spinner=false;
+          this.spinnerService.hide();
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something Went Wrong' });
         }
       });
-      this.spinner=false;
 
     }else{
-
       this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
       this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
       this.service.saveKcpBill(this.kcpBill).subscribe(res=> {
@@ -294,11 +297,11 @@ export class KcpBillFormComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
           this.service.downloadReport(res.entity).subscribe(response => {
             this.base64 = response.base64;
-
+            this.spinnerService.hide();
           });
         }
         else{
-          this.spinner=false;
+          this.spinnerService.hide();
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
         }
       });

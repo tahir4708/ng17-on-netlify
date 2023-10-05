@@ -9,51 +9,63 @@ import {BasicLoginService} from '../../pages/auth/login/basic-login/basic-login.
   styleUrls: ['./admin.component.scss'],
   animations: [
     trigger('mobileMenuTop', [
-      state('no-block, void',
+      state(
+        'no-block, void',
         style({
           overflow: 'hidden',
           height: '0px',
         })
       ),
-      state('yes-block',
+      state(
+        'yes-block',
         style({
-          height: AUTO_STYLE,
+          height: 'auto',
         })
       ),
-      transition('no-block <=> yes-block', [
-        animate('400ms ease-in-out')
-      ])
+      transition('no-block <=> yes-block', animate('400ms ease-in-out')),
     ]),
     trigger('slideInOut', [
-      state('in', style({
-        transform: 'translate3d(0, 0, 0)'
-      })),
-      state('out', style({
-        transform: 'translate3d(100%, 0, 0)'
-      })),
+      state(
+        'in',
+        style({
+          transform: 'translate3d(0, 0, 0)',
+        })
+      ),
+      state(
+        'out',
+        style({
+          transform: 'translate3d(100%, 0, 0)',
+        })
+      ),
       transition('in => out', animate('400ms ease-in-out')),
-      transition('out => in', animate('400ms ease-in-out'))
+      transition('out => in', animate('400ms ease-in-out')),
     ]),
     trigger('slideOnOff', [
-      state('on', style({
-        transform: 'translate3d(0, 0, 0)'
-      })),
-      state('off', style({
-        transform: 'translate3d(100%, 0, 0)'
-      })),
+      state(
+        'on',
+        style({
+          transform: 'translate3d(0, 0, 0)',
+        })
+      ),
+      state(
+        'off',
+        style({
+          transform: 'translate3d(100%, 0, 0)',
+        })
+      ),
       transition('on => off', animate('400ms ease-in-out')),
-      transition('off => on', animate('400ms ease-in-out'))
+      transition('off => on', animate('400ms ease-in-out')),
     ]),
     trigger('fadeInOutTranslate', [
       transition(':enter', [
-        style({opacity: 0}),
-        animate('400ms ease-in-out', style({opacity: 1}))
+        style({ opacity: 0, transform: 'translate(0)' }),
+        animate('400ms ease-in-out', style({ opacity: 1 })),
       ]),
       transition(':leave', [
-        style({transform: 'translate(0)'}),
-        animate('400ms ease-in-out', style({opacity: 0}))
-      ])
-    ])
+        style({ opacity: 1, transform: 'translate(0)' }),
+        animate('400ms ease-in-out', style({ opacity: 0 })),
+      ]),
+    ]),
   ]
 })
 export class AdminComponent implements OnInit {

@@ -5,6 +5,7 @@ import {jqxPanelComponent} from "jqwidgets-ng/jqxpanel";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
 import {TableComponentComponent} from "../../../admin/framework/table-component/table-component.component";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-kcp-bill-list',
@@ -25,9 +26,11 @@ export class KcpBillListComponent implements OnInit {
               private ref: ChangeDetectorRef,
               private router: Router,
               private sanitizer: DomSanitizer,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private spinnerService: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.spinnerService.show();
     this.service.getKcpAllBills().subscribe(response => {
       this.data = response.entity;
 
@@ -78,6 +81,7 @@ export class KcpBillListComponent implements OnInit {
       console.log(this.source);
       this.dataAdapter = new jqx.dataAdapter(this.source);
       console.log(this.dataAdapter);
+      this.spinnerService.hide();
     });
   }
 

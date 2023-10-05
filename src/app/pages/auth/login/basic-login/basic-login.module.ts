@@ -5,6 +5,9 @@ import {BasicLoginRoutingModule} from './basic-login-routing.module';
 import {SharedModule} from '../../../../shared/shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {NgxSpinnerModule} from "ngx-spinner";
+import {ToastModule} from "primeng/toast";
+import {MessageModule} from "primeng/message";
 
 @NgModule({
   imports: [
@@ -12,7 +15,10 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
     BasicLoginRoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    NgxSpinnerModule,
+    ToastModule,
+    MessageModule
   ],
   declarations: [BasicLoginComponent]
 })

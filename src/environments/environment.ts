@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  API_BASE_URL: 'https://localhost:44343'
+  API_BASE_URL: 'https://localhost:44343',JASPER_BASE_URL: 'http://203.99.177.6:8080',
 };

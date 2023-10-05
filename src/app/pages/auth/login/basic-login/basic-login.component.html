@@ -1,6 +1,8 @@
-<div *ngIf="spinner" class="spinner-container">
-  <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
-</div>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+  <p style="color: white">Please Wait. </p>
+</ngx-spinner>
+<p-toast></p-toast>
+
 <section class="login p-fixed d-flex text-center bg-primary common-img-bg">
   <div class="auth-fluid">
     <div class="row">

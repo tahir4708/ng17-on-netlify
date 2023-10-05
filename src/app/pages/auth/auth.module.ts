@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {AuthRoutingModule} from './auth-routing.module';
 import {SharedModule} from '../../shared/shared.module';
 import {HttpClientModule} from '@angular/common/http';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {NgxSpinnerModule} from "ngx-spinner";
+import {MessageService} from "primeng/api";
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import {NgxSpinnerModule} from "ngx-spinner";
     HttpClientModule,
     ProgressSpinnerModule
   ],
-  declarations: []
+  declarations: [],
+  providers: [MessageService],
 })
 export class AuthModule { }
