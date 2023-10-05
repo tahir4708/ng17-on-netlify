@@ -1,0 +1,20 @@
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+  <p style="color: white">Please Wait. </p>
+</ngx-spinner>
+  <div class="card">
+    <label class="col-form-label ">Search &nbsp; &nbsp; </label>
+    <jqxInput #searchComponent autofocus [width]="400" [searchMode]="'containsignorecase'"
+              [height]="30" (keyup)="getEntityListBySearch($event)" [theme]="'office'" ></jqxInput>
+  </div>
+  <div class="card">
+    <div class="card-header">
+
+    </div>
+    <div class="card-body">
+      <jqxGrid #dataTable   [height]="'100%'"  [width]="'100%'"
+               [source]="dataAdapter" [columns]="columns" [pageable]="true"
+               (onPagechanged)="onPageChanged($event)" (onPagesizechanged)="onPageSizeChanged($event)"
+               [theme]="'office'" [sortable]="true"  [filterable]="true" [selectionmode]="'multiplerowsextended'" >
+      </jqxGrid>
+    </div>
+  </div>

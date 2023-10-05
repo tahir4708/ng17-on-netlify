@@ -1,0 +1,21 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'  # Use a Windows-based agent pool for IIS
+
+steps:
+- task: UseNode@1
+  inputs:
+    version: '10.x'  # Change the Node.js version if needed
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install -g @angular/cli --force
+    npm install --force
+    npm run lint
+    ng build --prod
+  displayName: 'npm install and build'
+
+
+# Add more steps for saving build artifacts, deploying, etc., as needed.
