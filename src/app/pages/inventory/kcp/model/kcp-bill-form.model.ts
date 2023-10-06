@@ -11,6 +11,8 @@ export interface KcpBillFormModel{
   totalPartsBill: any | 0;
   totalLabourBill : any|0;
 
+  vehicleName:any|"";
+
   saleKcpBillLabourLines: KcpBillPartsLinesModel[];
   saleKcpBillPartsLines: KcpBillLabourRateLinesModel[];
 }

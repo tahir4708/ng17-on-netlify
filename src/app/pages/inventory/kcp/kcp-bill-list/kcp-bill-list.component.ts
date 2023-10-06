@@ -39,6 +39,8 @@ export class KcpBillListComponent implements OnInit {
         dataFields: [
           { name: 'id', type: 'int'},
           { name: 'billNo', type: 'string'},
+          { name: 'vehicleNo', type: 'string'},
+          { name: 'vehicleName', type: 'string'},
           { name: 'workOrderNo', type: 'string'},
           { name: 'totalBill', type: 'decimal'},
           { name: 'totalPartsBill', type: 'decimal'},
@@ -52,28 +54,17 @@ export class KcpBillListComponent implements OnInit {
 
       this.columns = [
         { text: 'id', dataField: 'id', width: 300, hidden: true },
-        { text: 'Bill No', dataField: 'billNo', width: '15%' },
-        { text: 'Work Order No', dataField: 'workOrderNo', width: '15%' },
+        { text: 'Bill No', dataField: 'billNo', width: '10%' },
+        { text: 'Vehicle No', dataField: 'vehicleNo', width: '10%' },
+        { text: 'Vehicle', dataField: 'vehicleName', width: '20%' },
+        { text: 'Work Order No', dataField: 'workOrderNo', width: '10%' },
         { text: 'Total Bill', dataField: 'totalBill', width: '10%' },
-        { text: 'Total Parts Bill', dataField: 'totalPartsBill', width: '15%'},
-        { text: 'Total Labour Bill', dataField: 'totalLabourBill', width: '15%' },
-        { text: 'Date', dataField: 'date', width: '15%' },
-        {
-          text: 'Action',
-          dataField: 'Action',
-          width: '15%',
-          cellsRenderer: (row: any): string => {
-            const id = this.dataTable.getcellvalue(row, 'id');
-            const navigation = '/inventory/kcp-bill-form';
+        { text: 'Total Parts Bill', dataField: 'totalPartsBill', width: '10%'},
+        { text: 'Total Labour Bill', dataField: 'totalLabourBill', width: '10%' },
+        { text: 'Date', dataField: 'date', width: '20%' }
 
-            return `
-        <a href="${navigation}/${id}" style="text-decoration: none; color: #007bff; display: inline-block;">
-            <i class="pi pi-pencil" style="margin-left: 50px;; margin-top: 10px;"></i>
-        </a>
-    `;
-          },
 
-        }
+
 
       ];
 
@@ -121,5 +112,10 @@ export class KcpBillListComponent implements OnInit {
     // get page information.
     let paginginformation = this.dataTable.getpaginginformation();
     this.pagingInfo.nativeElement.innerHTML = '<div style="margin-top: 5px;">Page:' + paginginformation.pagenum + ', Page Size: ' + paginginformation.pagesize + ', Pages Count: ' + paginginformation.pagescount + '</div>';
+  }
+
+  onRowdoubleclick($event: any) {
+
+   this.router.navigate(['/inventory/kcp-bill-form/'+$event.args.row.bounddata.id])
   }
 }

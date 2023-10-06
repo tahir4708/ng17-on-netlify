@@ -34,6 +34,15 @@
         </div>
       </div>
     </div>
+    <div class="form-group row">
+
+      <div class="col-md-3">
+        <div class="field">
+          <label for="vehicleName">Vehicle</label>
+          <input type="text" class="input-field" id="vehicleName" [(ngModel)]="kcpBill.vehicleName" required autofocus />
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="app-card">
@@ -43,7 +52,7 @@
       <p-button type="button" icon="pi pi-minus" (click)="deleteRow('part')" styleClass="p-button-text"></p-button>
     </div>
     <jqxGrid #dataTable (onRowselect)="OnRowSelect($event)" [width]="'100%'"
-             [source]="dataAdapter" [columns]="columns"
+             [source]="dataAdapter" [columns]="columns" (onCellvaluechanged)="calculateCurrentRateSum()"
              (onCellendedit)="calculatePartsBill()" [autoheight]='true'
              [theme]="'office'" [sortable]="true" [filterable]="true" [editable]="true" [selectionmode]="'checkbox'" >
     </jqxGrid>
@@ -67,7 +76,7 @@
     </div>
     <jqxGrid #labourRateDataTable (onCellvaluechanged)="OnRowSelect($event)" [autoheight]='true' [width]="'100%'"
              [source]="dataAdapter" [columns]="labourRateColumns" (onRowdoubleclick)="onRowDobleClick($event)"
-             [theme]="'office'" [sortable]="true" (onCellendedit)="calculateCurrentRateSum()"
+             [theme]="'office'" [sortable]="true"  (onCellvaluechanged)="calculateCurrentRateSum()"
              [filterable]="true" [editable]="true" [selectionmode]="'checkbox'" >
     </jqxGrid>
     <div class="form-group row" style="padding-top: 2rem;">
@@ -83,24 +92,27 @@
     </div>
   </div>
 
-  <div class="form-group row" style="padding-top: 2rem;">
-    <div class="col-md-6 d-flex justify-content-start">
-      <div class="field">
-        <p-button type="button" class="button-page" (click)="saveEntity()">Save</p-button>
+  <div class="app-card">
+    <div class="form-group row" style="padding-top: 2rem;">
+      <div class="col-md-6 d-flex justify-content-start">
+        <div class="field">
+          <p-button type="button" class="button-page" (click)="saveEntity()">Save</p-button>
+        </div>
+        <div *ngIf="!id" class="field" style="padding-left: 2rem">
+          <p-button type="button" class="button-page" (click)="resetForm()">Reset</p-button>
+        </div>
       </div>
-      <div *ngIf="!id" class="field" style="padding-left: 2rem">
-        <p-button type="button" class="button-page" (click)="resetForm()">Reset</p-button>
-      </div>
-    </div>
-    <div class="col-md-6 d-flex justify-content-end">
-      <div class="field">
-        <label for="totalBill">Grand Total</label>
-      </div>
-      <div class="field" style="padding-left: 2rem">
-        <input type="text" disabled class="input-field" id="totalBill" [(ngModel)]="kcpBill.totalBill" required autofocus />
+      <div class="col-md-6 d-flex justify-content-end">
+        <div class="field">
+          <label for="totalBill">Grand Total</label>
+        </div>
+        <div class="field" style="padding-left: 2rem">
+          <input type="text" disabled class="input-field" id="totalBill" [(ngModel)]="kcpBill.totalBill" required autofocus />
+        </div>
       </div>
     </div>
   </div>
+
 </div>
 
 <app-card>

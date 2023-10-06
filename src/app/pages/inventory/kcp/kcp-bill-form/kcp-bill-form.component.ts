@@ -32,6 +32,7 @@ export class KcpBillFormComponent implements OnInit {
   public source: any;
   sanitizedPdfDataUrl: SafeResourceUrl = '';
   kcpBill: KcpBillFormModel = {
+    vehicleName: undefined,
     vehicleNo: undefined,
     totalLabourBill: undefined, totalPartsBill: undefined,
     id: 0, // Initialize with a default value or the appropriate initial value
@@ -69,24 +70,33 @@ export class KcpBillFormComponent implements OnInit {
               private messageService: MessageService,
               private spinnerService: NgxSpinnerService) {
 
+    this.spinnerService.show();
 
   }
   ngOnInit() {
 
+    this.spinnerService.show();
     this.id = this.route.snapshot.params['id'];
 
     this.isAddMode = !this.id;
-    this.service.getKcpLabourRates().subscribe(x => {
-      this.spinnerService.show();
-      this.lovMapLabourRates = x.entity;
-      this.spinnerService.hide();
-    });
+
+    if(this.lovMapLabourRates === undefined){
+      this.service.getKcpLabourRates().subscribe(x => {
+
+        this.lovMapLabourRates = x.entity;
+        this.spinnerService.hide();
+
+      });
+    }
+
 
     if(this.id > 0 && this.id != undefined){
       this.spinnerService.show();
       this.service.getKcpAllBillById(this.id).subscribe(x=>{
 
         this.kcpBill = x.entity;
+        const formattedDate = this.datePipe.transform(this.kcpBill.date, 'yyyy-MM-dd');
+        this.kcpBill.date =formattedDate;
         this.fillgrid(x.entity.saleKcpBillPartsLines);
         this.fillgridLabour((x.entity.saleKcpBillLabourLines))
         this.formGroup.patchValue(x.entity);
@@ -100,13 +110,16 @@ export class KcpBillFormComponent implements OnInit {
     this.formGroup = this.fb.group({
       id: [0],
       billNo: [''],
+      vehicleNo: [''],
+      vehicleName: [''],
       workOrderNo: [''],
-      date: [],
+      date: [this.kcpBill.date],
       totalBill: [0],
       totalPartsBill: [0],
       totalLabourBill: [0],
       saleKcpBillLabourLines: this.fb.array([]),
       saleKcpBillPartsLines: this.fb.array([]),
+      deleted: false
     });
     const formattedDate = this.datePipe.transform(this.kcpBill.date, 'yyyy-MM-dd');
     this.formGroup.patchValue({ date: formattedDate });
@@ -121,12 +134,9 @@ export class KcpBillFormComponent implements OnInit {
       { text: 'Product Price', dataField: 'perItemPrice', editable: true },
       {
         text: 'Quantity', dataField: 'quantity', editable: true,
-
-      },
-      { text: 'Tax %', dataField: 'taxPercentage',
         cellbeginedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void => {
 
-
+          debugger;
           const  transaction: any = {};
           transaction.product_price = this.dataTable.getcellvalue(row, 'perItemPrice');
           transaction.quantity = this.dataTable.getcellvalue(row, 'quantity');
@@ -134,17 +144,19 @@ export class KcpBillFormComponent implements OnInit {
           this.dataTable.setcellvalue(row,'totalPrice',total_price);
         },
         cellendedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void=>{
-
+debugger;
           const  transaction: any = {};
           transaction.product_price = this.dataTable.getcellvalue(row, 'perItemPrice');
-          transaction.quantity = this.dataTable.getcellvalue(row, 'quantity');
-          transaction.tax =newvalue;
-          const percentage = transaction.tax;
-          const priceAfterTax =  parseFloat((percentage*transaction.product_price).toFixed(2));
+          transaction.quantity = newvalue;
+
+          const priceAfterTax =  parseFloat(((1.2)*transaction.product_price).toFixed(2));
           const quantity = transaction.quantity;
           var total_price = priceAfterTax * quantity;
           this.dataTable.setcellvalue(row,'totalPrice',total_price);
-        }},
+        }
+      },
+      { text: 'Tax %', dataField: 'taxPercentage', hidden: 'true', value:'1.2'
+        },
       { text: 'Total', dataField: 'totalPrice' ,editable: false },
       { text: 'deleted', dataField: 'deleted' ,hidden: 'true' },
     ];
@@ -208,7 +220,7 @@ export class KcpBillFormComponent implements OnInit {
 
   addRowPartLine() {
     const row: KcpBillPartsLinesModel = {
-      deleted: 0,
+      deleted: false,
       id: undefined,
       perItemPrice: undefined,
       productName: undefined,
@@ -223,7 +235,7 @@ export class KcpBillFormComponent implements OnInit {
   addRowLabourRateLine() {
 
     const newRow: KcpBillLabourRateLinesModel = {
-      deleted: 0,
+      deleted: false,
       id: 0,
       workItemId: 0,
       description: [''],
@@ -243,15 +255,20 @@ export class KcpBillFormComponent implements OnInit {
   }
 
   calculateCurrentRateSum() {
-
+    debugger;
     let sum = 0;
     const rowsCount = this.labourRateDataTable.getrows().length;
     for (let i = 0; i < rowsCount; i++) {
       const rowData = this.labourRateDataTable.getrowdata(i);
       const currentRate = rowData.labourRate;
       sum += parseFloat(currentRate); // Assuming current_rate is a numeric field
+      this.kcpBill.totalLabourBill = sum;
     }
-    this.kcpBill.totalLabourBill = sum;
+
+
+    if(this.kcpBill.totalLabourBill == undefined) {
+      this.kcpBill.totalLabourBill =0
+    }
 
     this.kcpBill.totalBill = this.kcpBill.totalPartsBill + this.kcpBill.totalLabourBill;
   }
@@ -305,7 +322,9 @@ export class KcpBillFormComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
         }
       });
+
     }
+    this.spinnerService.hide();
   }
 
   resetForm() {
@@ -409,8 +428,11 @@ export class KcpBillFormComponent implements OnInit {
   }
 
   CancelPdf() {
-    this.base64 =null;
-    this.pdfDataReceived = false;
+    this.kcpBill.id = 0;
+    this.base64 = null;
+    this.ngOnInit();
+    this.spinnerService.hide();
+
   }
   fillgridLabour(gridData){
 
@@ -437,4 +459,5 @@ export class KcpBillFormComponent implements OnInit {
       }
     }
   }
+
 }

@@ -66,7 +66,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true,
-  },,DatePipe],
+  },DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
