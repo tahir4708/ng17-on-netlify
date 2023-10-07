@@ -166,62 +166,15 @@ debugger;
     ];
 
     this.labourRateColumns = [
-      { text: 'work rate id', dataField: 'id',hidden:'true', width: 300 },
-      { text: 'work item id', dataField: 'workItemId', width: 300 ,hidden:'true'},
+      { text: 'work rate id', dataField: 'id',hidden:'true' },
+      { text: 'work item id', dataField: 'workItemId' ,hidden:'true'},
 
-
-      /*{
-        text: 'Rate Description',
-        datafield: 'description',
-        displayfield: 'label',
-        columntype: 'dropdownlist',
-        createeditor: function (row, value, editor) {
-          if (!editor) {
-            // Check if editor is undefined or falsy
-            return;
-          }
-
-          const dropDownListOptions = {
-            filterable: true,
-            searchMode: 'containsignorecase',
-            source: this.lovMapLabourRates, // Use your source directly
-            displayMember: 'label',
-            valueMember: 'label'
-          };
-
-          const selectEventHandler = function (event) {
-            const selectedItem = event.args.item;
-
-            this.labourRateDataTable.setcellvalue(row, 'description', selectedItem.label);
-            this.labourRateDataTable.setcellvalue(row, 'workItemId', selectedItem.originalItem.value);
-            this.labourRateDataTable.setcellvalue(row, 'labourRate', selectedItem.originalItem.rate);
-          }.bind(this);
-
-          // Remove the 'select' event handler if it's already added
-          if (editor.off) {
-            editor.off('select', selectEventHandler);
-          }
-
-          // Add the 'select' event handler
-          if (editor.on) {
-            editor.on('select', selectEventHandler);
-
-            // Create the jqxDropDownList with options
-            editor.jqxDropDownList(dropDownListOptions);
-          }
-        }.bind(this),
-
-
-        cellendedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void => {
-          // Your cellendedit logic here
-        }
-      },*/
       {
         text: 'Rate Description',
         dataField: 'label',
         columntype: 'dropdownlist',
         displayfield: 'label',
-        width: '80%',
+        width: '70%',
         initeditor: (row, cellvalue, editor, celltext, cellwidth, cellheight) => {
           editor.jqxDropDownList({
             filterable: true,
@@ -258,15 +211,21 @@ debugger;
           if (newvalue == "") return oldvalue;
         }
       },
-      {text: 'Quantity', dataField: 'quantity', width: '10%',
+      {text: 'Quantity', dataField: 'quantity', width: '7%',
         cellvaluechanging: (row, column, columntype, oldvalue, newvalue) => {
-          // this.la
+        debugger;
+        const labourRate = this.labourRateDataTable.getcellvalue(row,'labourRate')
+          console.log(this.labourRateDataTable.getrowdata(row));
+        const total=newvalue * labourRate;
+            this.labourRateDataTable.setcellvalue(row, 'totalPrice',total);
+
         }
       },
 
 
 
-      { text: 'Rate', dataField: 'labourRate' },
+      { text: 'Rate', dataField: 'labourRate', width: '10%' },
+      { text: 'Total Price', dataField: 'totalPrice',width: '10%' },
       { text: 'deleted', dataField: 'deleted', hidden: 'true',width: '10%' },
     ];
   }
@@ -288,6 +247,7 @@ debugger;
   addRowLabourRateLine() {
 
     const newRow: KcpBillLabourRateLinesModel = {
+      quantity: 0, totalPrice: undefined,
       deleted: false,
       id: 0,
       workItemId: 0,
@@ -313,7 +273,7 @@ debugger;
     const rowsCount = this.labourRateDataTable.getrows().length;
     for (let i = 0; i < rowsCount; i++) {
       const rowData = this.labourRateDataTable.getrowdata(i);
-      const currentRate = rowData.labourRate;
+      const currentRate = rowData.totalPrice;
       sum += parseFloat(currentRate); // Assuming current_rate is a numeric field
       this.kcpBill.totalLabourBill = sum;
     }
@@ -350,7 +310,6 @@ debugger;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Record Updated Successfully' });
           this.service.downloadReport(x.entity).subscribe(response => {
             this.base64 = response.base64;
-            this.spinnerService.hide();
           });
         }
         else{
@@ -367,7 +326,6 @@ debugger;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
           this.service.downloadReport(res.entity).subscribe(response => {
             this.base64 = response.base64;
-            this.spinnerService.hide();
           });
         }
         else{
@@ -466,15 +424,24 @@ debugger;
 
 
   getPdfDataUrl(): SafeResourceUrl {
+    debugger;
+    if(this.id > 0){
+      this.service.downloadReport(this.id).subscribe(response => {
+        this.base64 = response.base64;
+      });
+    }
     if (!this.pdfDataReceived && this.base64) {
       const dataUrl = `data:application/pdf;base64,${this.base64}`;
       const sanitizedDataUrl = this.sanitizer.bypassSecurityTrustResourceUrl(dataUrl);
 
       // Update the flag to indicate that the response has been received
       this.pdfDataReceived = true;
-      this.spinner = false;
+
+      this.spinnerService.hide();
       return sanitizedDataUrl;
     } else {
+
+      this.spinnerService.hide();
       return '';
     }
 
