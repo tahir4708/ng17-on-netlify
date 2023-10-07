@@ -38,7 +38,7 @@
 
       <div class="col-md-3">
         <div class="field">
-          <label for="vehicleName">Vehicle</label>
+          <label for="vehicleName">Type of Vehicle</label>
           <input type="text" class="input-field" id="vehicleName" [(ngModel)]="kcpBill.vehicleName" required autofocus />
         </div>
       </div>
@@ -93,15 +93,33 @@
   </div>
 
   <div class="app-card">
-    <div class="form-group row" style="padding-top: 2rem;">
+    <div class="form-group row" style="padding-top: 2rem; padding-left: 2rem">
       <div class="col-md-6 d-flex justify-content-start">
-        <div class="field">
-          <p-button type="button" class="button-page" (click)="saveEntity()">Save</p-button>
-        </div>
-        <div *ngIf="!id" class="field" style="padding-left: 2rem">
-          <p-button type="button" class="button-page" (click)="resetForm()">Reset</p-button>
+        <div class="form-group row">
+          <div style="padding-left: 30px" class="row-cols-3 -align-center">
+            <td>
+              <button class="btn btn-success btn-outline-success rounded" (click)="saveEntity()">
+                <i class="la la-save"></i> Save
+              </button>
+            </td>
+          </div>
+          <div *ngIf="id > 0" style="padding-left: 30px" class="row-cols-3 -align-center">
+            <td>
+              <button class="btn btn-warning btn-outline-warning rounded" (click)="getPdfDataUrl()">
+                <i class="la la-print"></i> Print
+              </button>
+            </td>
+          </div>
+          <div *ngIf="!(id > 0)" style="padding-left: 30px" class="row-cols-3 -align-center">
+            <td>
+              <button class="btn btn-warning btn-outline-warning rounded" (click)="resetForm()">
+                <i class="la la-close"></i> Reset
+              </button>
+            </td>
+          </div>
         </div>
       </div>
+
       <div class="col-md-6 d-flex justify-content-end">
         <div class="field">
           <label for="totalBill">Grand Total</label>

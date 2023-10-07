@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Injectable, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Injectable, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {InventoryService} from "../../inventory-service.service";
 import {KcpBillFormModel} from "../model/kcp-bill-form.model";
 import {KcpBillLabourRateLinesModel} from "../model/kcp-bill-labour-rate-lines.model";
@@ -29,6 +29,7 @@ export class KcpBillFormComponent implements OnInit {
   public formGroup: FormGroup;
   pdfDataReceived: boolean = false;
   public labourRateColumns: any;
+  public labourDataAdapter: any;
   public source: any;
   sanitizedPdfDataUrl: SafeResourceUrl = '';
   kcpBill: KcpBillFormModel = {
@@ -68,7 +69,9 @@ export class KcpBillFormComponent implements OnInit {
               private ref: ChangeDetectorRef,
               private datePipe: DatePipe,
               private messageService: MessageService,
-              private spinnerService: NgxSpinnerService) {
+              private spinnerService: NgxSpinnerService,
+              private el: ElementRef,
+              private renderer: Renderer2) {
 
     this.spinnerService.show();
 
@@ -164,7 +167,9 @@ debugger;
     this.labourRateColumns = [
       { text: 'work rate id', dataField: 'id',hidden:'true', width: 300 },
       { text: 'work item id', dataField: 'workItemId', width: 300 ,hidden:'true'},
-      {
+
+
+      /*{
         text: 'Rate Description',
         datafield: 'description',
         displayfield: 'label',
@@ -209,12 +214,59 @@ debugger;
         cellendedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void => {
           // Your cellendedit logic here
         }
+      },*/
+      {
+        text: 'Rate Description',
+        dataField: 'label',
+        columntype: 'dropdownlist',
+        displayfield: 'label',
+        width: '80%',
+        initeditor: (row, cellvalue, editor, celltext, cellwidth, cellheight) => {
+          editor.jqxDropDownList({
+            filterable: true,
+            searchMode: 'containsignorecase',
+            source: this.lovMapLabourRates,
+            displayMember: 'label',
+            valueMember: 'value'
+          });
+        },
+        createeditor: (row, value, editor) => {
+          editor.jqxDropDownList({
+            filterable: true,
+            searchMode: 'containsignorecase',
+            source: this.lovMapLabourRates,
+            displayMember: 'label',
+            valueMember: 'value'
+          });
+        },
+        cellendedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any) => {
+
+          console.log(newvalue);
+          const workItemId = this.lovMapLabourRates.find(item => item.label === newvalue)?.value;
+          this.labourRateDataTable.setcellvalue(row,'workItemId',workItemId);
+          const labourRate =this.lovMapLabourRates.find(item => item.label === newvalue)?.rate;
+          this.labourRateDataTable.setcellvalue(row,'labourRate',labourRate);
+          const description =this.lovMapLabourRates.find(item => item.label === newvalue)?.label;
+          this.labourRateDataTable.setcellvalue(row,'label',description);
+          const rowData = this.labourRateDataTable.getrowdata(row);
+          console.log('Row Data:', rowData);
+        },
+        cellvaluechanging: (row, column, columntype, oldvalue, newvalue) => {
+
+          // return the old value, if the new value is empty.
+          if (newvalue == "") return oldvalue;
+        }
+      },
+      {text: 'Quantity', dataField: 'quantity', width: '10%',
+        cellvaluechanging: (row, column, columntype, oldvalue, newvalue) => {
+          // this.la
+        }
       },
 
 
 
       { text: 'Rate', dataField: 'labourRate' },
-      { text: 'deleted', dataField: 'deleted', hidden: 'true' },
+      { text: 'deleted', dataField: 'deleted', hidden: 'true',width: '10%' },
     ];
   }
 
@@ -438,6 +490,7 @@ debugger;
 
     this.ref.detectChanges();
     if(this.labourRateDataTable !== undefined){
+      console.log(gridData);
       (this.labourRateDataTable.source() as any)._source.localdata = gridData;
       this.labourRateDataTable.updatebounddata();
       this.labourRateDataTable.refresh();
@@ -451,6 +504,7 @@ debugger;
 
     this.ref.detectChanges();
     if(this.dataTable !== undefined){
+      console.log(gridData);
       (this.dataTable.source() as any)._source.localdata = gridData;
       this.dataTable.updatebounddata();
       this.dataTable.refresh();
