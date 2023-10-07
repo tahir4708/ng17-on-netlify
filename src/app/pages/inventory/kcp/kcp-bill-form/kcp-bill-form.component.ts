@@ -95,6 +95,7 @@ export class KcpBillFormComponent implements OnInit {
       this.service.getKcpAllBillById(this.id).subscribe(x=>{
 
         this.kcpBill = x.entity;
+        console.log(this.kcpBill);
         const formattedDate = this.datePipe.transform(this.kcpBill.date, 'yyyy-MM-dd');
         this.kcpBill.date =formattedDate;
         this.fillgrid(x.entity.saleKcpBillPartsLines);
