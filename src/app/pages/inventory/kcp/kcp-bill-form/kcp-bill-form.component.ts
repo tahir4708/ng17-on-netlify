@@ -353,7 +353,6 @@ debugger;
       }
       this.spinnerService.hide();
     }else{
-      this.requiredMessage = "Field is Required";
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Form Value Required' });
     }
 
@@ -472,6 +471,7 @@ debugger;
   }
 
   downloadFile(): void {
+    this.spinnerService.show();
     this.service.downloadReport(this.id).subscribe(data => {
 
       // Check if the data is a valid base64 string
