@@ -23047,3 +23047,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   transform: translate(-50%, -50%);
   z-index: 9999; /* Make sure the spinner is above other content */
 }
+.error-message {
+  color: red; /* Set the desired text color */
+  font-size: 14px; /* Adjust the font size if needed */
+  /* Add any other styling you want */
+}

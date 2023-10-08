@@ -6,7 +6,7 @@ import {KcpBillPartsLinesModel} from "../model/kcp-bill-parts-lines.model";
 
 import {jqxGridComponent} from "jqwidgets-ng/jqxgrid";
 import {jqxInputComponent} from "jqwidgets-ng/jqxinput";
-import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -31,11 +31,11 @@ export class KcpBillFormComponent implements OnInit {
   public labourRateColumns: any;
   public labourDataAdapter: any;
   public source: any;
-  sanitizedPdfDataUrl: SafeResourceUrl = '';
   kcpBill: KcpBillFormModel = {
-    vehicleName: undefined,
-    vehicleNo: undefined,
-    totalLabourBill: undefined, totalPartsBill: undefined,
+    vehicleName: '',
+    vehicleNo: '',
+    totalLabourBill: 0,
+    totalPartsBill: 0,
     id: 0, // Initialize with a default value or the appropriate initial value
     billNo: '',
     workOrderNo: '',
@@ -53,14 +53,13 @@ export class KcpBillFormComponent implements OnInit {
   @ViewChild('labourRateDataTable') labourRateDataTable: jqxGridComponent ;
   @ViewChild('labourRateInputComponent') labourRateInputComponent: jqxInputComponent;
   public base64: any;
-  pdfData: any;
-  private sanitizedPdfData: SafeResourceUrl;
-  private id: any;
-  private isAddMode: boolean=false;
-  private gridData: Array<any>;
+  public id: any;
+  public isAddMode: boolean=false;
   spinner: boolean = false;
   lovMapLabourRates: any;
+  public pdfDataUrl: SafeResourceUrl;
 
+  public requiredMessage: string;
   constructor(public service: InventoryService,
               public fb: FormBuilder,
               private router: Router,
@@ -69,15 +68,13 @@ export class KcpBillFormComponent implements OnInit {
               private ref: ChangeDetectorRef,
               private datePipe: DatePipe,
               private messageService: MessageService,
-              private spinnerService: NgxSpinnerService,
-              private el: ElementRef,
-              private renderer: Renderer2) {
+              private spinnerService: NgxSpinnerService) {
 
     this.spinnerService.show();
 
   }
   ngOnInit() {
-
+debugger;
     this.spinnerService.show();
     this.id = this.route.snapshot.params['id'];
 
@@ -92,13 +89,12 @@ export class KcpBillFormComponent implements OnInit {
       });
     }
 
-
     if(this.id > 0 && this.id != undefined){
+
       this.spinnerService.show();
       this.service.getKcpAllBillById(this.id).subscribe(x=>{
 
         this.kcpBill = x.entity;
-        console.log(this.kcpBill);
         const formattedDate = this.datePipe.transform(this.kcpBill.date, 'yyyy-MM-dd');
         this.kcpBill.date =formattedDate;
         this.fillgrid(x.entity.saleKcpBillPartsLines);
@@ -113,10 +109,10 @@ export class KcpBillFormComponent implements OnInit {
 
     this.formGroup = this.fb.group({
       id: [0],
-      billNo: [''],
-      vehicleNo: [''],
-      vehicleName: [''],
-      workOrderNo: [''],
+      billNo: ['', Validators.required],
+      vehicleNo: ['',Validators.required],
+      vehicleName: ['',Validators.required],
+      workOrderNo: ['',Validators.required],
       date: [this.kcpBill.date],
       totalBill: [0],
       totalPartsBill: [0],
@@ -126,6 +122,7 @@ export class KcpBillFormComponent implements OnInit {
       deleted: false
     });
     const formattedDate = this.datePipe.transform(this.kcpBill.date, 'yyyy-MM-dd');
+
     this.formGroup.patchValue({ date: formattedDate });
 
   }
@@ -134,34 +131,28 @@ export class KcpBillFormComponent implements OnInit {
     this.columns = [
       { text: 'work_id', dataField: 'workId', hidden:true },
       // { text: 'product id', dataField: 'product_id',  editable:false,hidden:true },
-      { text: 'Product', dataField: 'productName', editable:true},
-      { text: 'Product Price', dataField: 'perItemPrice', editable: true },
+      { text: 'Product', dataField: 'productName', editable:true, width:'60%'},
       {
-        text: 'Quantity', dataField: 'quantity', editable: true,
-        cellbeginedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void => {
+        text: 'Quantity', dataField: 'quantity', editable: true,width:'9%',
+      },
+      { text: 'Per Item Price', dataField: 'perItemPrice', editable: true , width:'10%',
+        cellvaluechanging : (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void => {
+        debugger;
+        const perItemPrice = newvalue;
+            const quantity = this.dataTable.getcellvalue(row,'quantity');
+            const tax = 1.2;
 
-          debugger;
-          const  transaction: any = {};
-          transaction.product_price = this.dataTable.getcellvalue(row, 'perItemPrice');
-          transaction.quantity = this.dataTable.getcellvalue(row, 'quantity');
-          const total_price = transaction.product_price * transaction.quantity;
-          this.dataTable.setcellvalue(row,'totalPrice',total_price);
-        },
-        cellendedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any): void=>{
-debugger;
-          const  transaction: any = {};
-          transaction.product_price = this.dataTable.getcellvalue(row, 'perItemPrice');
-          transaction.quantity = newvalue;
+            const perItemPriceWithTax = (perItemPrice *1.2);
+            this.dataTable.setcellvalue(row,'perItemPriceWithTax',perItemPriceWithTax);
 
-          const priceAfterTax =  parseFloat(((1.2)*transaction.product_price).toFixed(2));
-          const quantity = transaction.quantity;
-          var total_price = priceAfterTax * quantity;
-          this.dataTable.setcellvalue(row,'totalPrice',total_price);
+            const totalPrice = perItemPriceWithTax * quantity;
+            this.dataTable.setcellvalue(row,'totalPrice',totalPrice);
         }
       },
-      { text: 'Tax %', dataField: 'taxPercentage', hidden: 'true', value:'1.2'
-        },
-      { text: 'Total', dataField: 'totalPrice' ,editable: false },
+      { text: 'With Tax', dataField: 'perItemPriceWithTax', editable: false,width:'9%' },
+
+
+      { text: 'Total', dataField: 'totalPrice' ,editable: false ,width:'9%'},
       { text: 'deleted', dataField: 'deleted' ,hidden: 'true' },
     ];
 
@@ -195,17 +186,23 @@ debugger;
         },
         cellendedit: (row: number, datafield: string, columntype: any, oldvalue: any, newvalue: any) => {
 
-          console.log(newvalue);
+
+        },
+        cellvaluechanging: (row, column, columntype, oldvalue, newvalue) => {
+
           const workItemId = this.lovMapLabourRates.find(item => item.label === newvalue)?.value;
           this.labourRateDataTable.setcellvalue(row,'workItemId',workItemId);
           const labourRate =this.lovMapLabourRates.find(item => item.label === newvalue)?.rate;
           this.labourRateDataTable.setcellvalue(row,'labourRate',labourRate);
           const description =this.lovMapLabourRates.find(item => item.label === newvalue)?.label;
           this.labourRateDataTable.setcellvalue(row,'label',description);
+
+          this.labourRateDataTable.getcellvalue(row,'quantity');
           const rowData = this.labourRateDataTable.getrowdata(row);
-          console.log('Row Data:', rowData);
-        },
-        cellvaluechanging: (row, column, columntype, oldvalue, newvalue) => {
+
+          debugger;
+          const total=this.labourRateDataTable.getcellvalue(row,'quantity') * labourRate;
+          this.labourRateDataTable.setcellvalue(row, 'totalPrice',total);
 
           // return the old value, if the new value is empty.
           if (newvalue == "") return oldvalue;
@@ -215,7 +212,6 @@ debugger;
         cellvaluechanging: (row, column, columntype, oldvalue, newvalue) => {
         debugger;
         const labourRate = this.labourRateDataTable.getcellvalue(row,'labourRate')
-          console.log(this.labourRateDataTable.getrowdata(row));
         const total=newvalue * labourRate;
             this.labourRateDataTable.setcellvalue(row, 'totalPrice',total);
 
@@ -224,21 +220,30 @@ debugger;
 
 
 
-      { text: 'Rate', dataField: 'labourRate', width: '10%' },
-      { text: 'Total Price', dataField: 'totalPrice',width: '10%' },
+      { text: 'Rate', dataField: 'labourRate', width: '10%',
+        cellvaluechanging: (row, column, columntype, oldvalue, newvalue) => {
+          debugger;
+          const labourRate = newvalue
+          const quantity = this.labourRateDataTable.getcellvalue(row,'quantity')
+          const total=quantity * newvalue;
+          this.labourRateDataTable.setcellvalue(row, 'totalPrice',total);
+
+        }},
+      { text: 'Total Price', dataField: 'totalPrice',width: '10%', editable: false },
       { text: 'deleted', dataField: 'deleted', hidden: 'true',width: '10%' },
     ];
   }
 
   addRowPartLine() {
     const row: KcpBillPartsLinesModel = {
+      perItemPriceWithTax:0,
       deleted: false,
       id: undefined,
-      perItemPrice: undefined,
-      productName: undefined,
-      quantity: undefined,
-      taxPercentage: undefined,
-      totalPrice: undefined
+      perItemPrice: 0,
+      productName: '',
+      quantity: 1,
+      taxPercentage: 0,
+      totalPrice: 0
     };
     var rows = this.dataTable.getrows();
     this.dataTable.addrow(rows.length+1,row);
@@ -247,7 +252,7 @@ debugger;
   addRowLabourRateLine() {
 
     const newRow: KcpBillLabourRateLinesModel = {
-      quantity: 0, totalPrice: undefined,
+      quantity: 1, totalPrice: 0,
       deleted: false,
       id: 0,
       workItemId: 0,
@@ -278,6 +283,9 @@ debugger;
       this.kcpBill.totalLabourBill = sum;
     }
 
+    if(this.kcpBill.totalPartsBill == undefined || rowsCount==0) {
+      this.kcpBill.totalPartsBill =0
+    }
 
     if(this.kcpBill.totalLabourBill == undefined) {
       this.kcpBill.totalLabourBill =0
@@ -286,73 +294,77 @@ debugger;
     this.kcpBill.totalBill = this.kcpBill.totalPartsBill + this.kcpBill.totalLabourBill;
   }
   calculatePartsBill() {
-
+    debugger;
     let sum = 0;
     const rowsCount = this.dataTable.getrows().length;
     for (let i = 0; i < rowsCount; i++) {
       const rowData = this.dataTable.getrowdata(i);
       const currentRate = rowData.totalPrice;
       sum += parseFloat(currentRate); // Assuming current_rate is a numeric field
+      this.kcpBill.totalPartsBill = sum;
     }
-    this.kcpBill.totalPartsBill = sum;
 
-    this.kcpBill.totalBill = this.kcpBill.totalPartsBill + this.kcpBill.totalLabourBill;
+    if(this.kcpBill.totalLabourBill == undefined) {
+      this.kcpBill.totalLabourBill =0
+    }
+    if(this.kcpBill.totalPartsBill == undefined || rowsCount==0) {
+      this.kcpBill.totalPartsBill =0
+    }
+
+    this.kcpBill.totalBill = this.kcpBill.totalLabourBill + this.kcpBill.totalPartsBill;
   }
 
   saveEntity(){
-    this.spinnerService.show();
-    if(this.kcpBill.id > 0){
-      this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
-      this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
 
-      this.service.saveKcpBill(this.kcpBill).subscribe(x=> {
-        if(x.entity){
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Record Updated Successfully' });
-          this.service.downloadReport(x.entity).subscribe(response => {
-            this.base64 = response.base64;
-          });
-        }
-        else{
-          this.spinnerService.hide();
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something Went Wrong' });
-        }
-      });
+    if(this.formGroup.valid){
+      this.spinnerService.show();
+      if(this.id > 0){
+        this.kcpBill.id = this.id;
+        this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
+        this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
 
+        this.service.saveKcpBill(this.kcpBill).subscribe(x=> {
+          if(x.entity){
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Record Updated Successfully' });
+            this.id = x.entity;
+            this.downloadFile();
+          }
+          else{
+            this.spinnerService.hide();
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something Went Wrong' });
+          }
+        });
+
+      }else{
+        this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
+        this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
+        this.service.saveKcpBill(this.kcpBill).subscribe(res=> {
+          if(res.entity){
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
+            this.id = res.entity;
+            this.downloadFile();
+          }
+          else{
+            this.spinnerService.hide();
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+          }
+        });
+
+      }
+      this.spinnerService.hide();
     }else{
-      this.kcpBill.saleKcpBillLabourLines = this.labourRateDataTable.getrows();
-      this.kcpBill.saleKcpBillPartsLines =this.dataTable.getrows();
-      this.service.saveKcpBill(this.kcpBill).subscribe(res=> {
-        if(res.entity){
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
-          this.service.downloadReport(res.entity).subscribe(response => {
-            this.base64 = response.base64;
-          });
-        }
-        else{
-          this.spinnerService.hide();
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
-        }
-      });
-
+      this.requiredMessage = "Field is Required";
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Form Value Required' });
     }
-    this.spinnerService.hide();
+
   }
 
   resetForm() {
-    // Clear form fields by resetting the form group
-    this.kcpBill=null;
 
-    // Clear data bound to the grids
-    // Assuming you have references to your jqxGrid instances
-    this.dataTable.clear(); // Clear the first grid
-    this.labourRateDataTable.clear(); // Clear the second grid
+    this.formGroup.reset();
+      this.labourRateDataTable.clear();
+      this.dataTable.clear();
 
-    // Optionally, you can reset any other data or variables related to the grids here
-
-    // Clear any other data or variables as needed
-    this.kcpBill.totalPartsBill = null;
-    this.kcpBill.totalLabourBill = null;
-    this.kcpBill.totalBill = null;
   }
 
   deleteRow(value: any) {
@@ -360,12 +372,10 @@ debugger;
 
     if(value === 'part'){
       let values = this.dataTable.selectedrowindexes().reverse();
-      console.log(values);
       let rowUid = []; // Initialize rowUid as an array
 
       (async () => {
         try {
-          console.log(values.length);
           for (let i = 0; i < values.length; i++) {
             const rowData = await this.dataTable.getrowdata(values[i]);
 
@@ -376,23 +386,27 @@ debugger;
             this.dataTable.deleterow(rowUid[i]);
 
             if(this.dataTable.getcellvalue(i,'id')){
-              this.dataTable.setcellvalue(i,'deleted',1);
-              console.log(this.dataTable.getrowdata(i));
+              this.dataTable.setcellvalue(i,'deleted',false);
             }
+
           }
         } catch (e) {
-          console.log(e);
+
         }
-      })();
+
+       this.calculatePartsBill();
+      })
+
+      ();
+      debugger;
+
       this.dataTable.clearselection();
     }else{
       let values = this.labourRateDataTable.selectedrowindexes().reverse();
-      console.log(values);
       let rowUid = []; // Initialize rowUid as an array
 
       (async () => {
         try {
-          console.log(values.length);
           for (let i = 0; i < values.length; i++) {
             const rowData = await this.labourRateDataTable.getrowdata(values[i]);
             rowUid.push(rowData.uid);
@@ -401,16 +415,17 @@ debugger;
           for (let i = 0; i < rowUid.length; i++) {
             this.labourRateDataTable.deleterow(rowUid[i]);
             if(this.labourRateDataTable.getcellvalue(i,'id')){
-              this.labourRateDataTable.setcellvalue(i,'deleted',1);
-              console.log(this.labourRateDataTable.getrowdata(i));
+              this.labourRateDataTable.setcellvalue(i,'deleted',false);
             }
-
           }
         } catch (e) {
-          console.log(e);
+
         }
+        this.calculateCurrentRateSum();
       })();
+
       this.labourRateDataTable.clearselection();
+      console.log(this.kcpBill);
     }
 
 
@@ -423,34 +438,10 @@ debugger;
 
 
 
-  getPdfDataUrl(): SafeResourceUrl {
-    debugger;
-    if(this.id > 0){
-      this.service.downloadReport(this.id).subscribe(response => {
-        this.base64 = response.base64;
-      });
-    }
-    if (!this.pdfDataReceived && this.base64) {
-      const dataUrl = `data:application/pdf;base64,${this.base64}`;
-      const sanitizedDataUrl = this.sanitizer.bypassSecurityTrustResourceUrl(dataUrl);
-
-      // Update the flag to indicate that the response has been received
-      this.pdfDataReceived = true;
-
-      this.spinnerService.hide();
-      return sanitizedDataUrl;
-    } else {
-
-      this.spinnerService.hide();
-      return '';
-    }
-
-  }
 
   CancelPdf() {
-    this.kcpBill.id = 0;
-    this.base64 = null;
-    this.ngOnInit();
+    this.base64 =  null;
+    this.pdfDataUrl =null;
     this.spinnerService.hide();
 
   }
@@ -458,7 +449,6 @@ debugger;
 
     this.ref.detectChanges();
     if(this.labourRateDataTable !== undefined){
-      console.log(gridData);
       (this.labourRateDataTable.source() as any)._source.localdata = gridData;
       this.labourRateDataTable.updatebounddata();
       this.labourRateDataTable.refresh();
@@ -472,7 +462,6 @@ debugger;
 
     this.ref.detectChanges();
     if(this.dataTable !== undefined){
-      console.log(gridData);
       (this.dataTable.source() as any)._source.localdata = gridData;
       this.dataTable.updatebounddata();
       this.dataTable.refresh();
@@ -481,5 +470,37 @@ debugger;
       }
     }
   }
+
+  downloadFile(): void {
+    this.service.downloadReport(this.id).subscribe(data => {
+
+      // Check if the data is a valid base64 string
+      if (/^[A-Za-z0-9+/]*={0,2}$/.test(data.base64)) {
+        debugger;
+        this.base64 = data.base64;
+        // Decode the base64 data
+        const binaryData = atob(data.base64);
+        const length = binaryData.length;
+        const bytes = new Uint8Array(length);
+
+        for (let i = 0; i < length; i++) {
+          bytes[i] = binaryData.charCodeAt(i);
+        }
+
+        // Create a Blob from the Uint8Array
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+
+        // Create a data URL from the Blob
+        // this.pdfDataUrl = URL.createObjectURL(blob);
+        this.pdfDataUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+        this.spinnerService.hide();
+      } else {
+        this.spinnerService.hide();
+        // Handle the error as needed
+      }
+    });
+  }
+
+
 
 }

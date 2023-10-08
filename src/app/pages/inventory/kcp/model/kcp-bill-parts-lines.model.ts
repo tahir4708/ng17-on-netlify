@@ -6,4 +6,5 @@ export interface KcpBillPartsLinesModel{
   perItemPrice: any;
   totalPrice: any;
   deleted: boolean ;
+  perItemPriceWithTax: any;
 }

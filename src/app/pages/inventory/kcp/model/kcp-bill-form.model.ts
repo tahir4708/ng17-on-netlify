@@ -2,7 +2,7 @@ import {KcpBillLabourRateLinesModel} from "./kcp-bill-labour-rate-lines.model";
 import {KcpBillPartsLinesModel} from "./kcp-bill-parts-lines.model";
 
 export interface KcpBillFormModel{
-  id: any | 0;
+  id: number | 0;
   billNo: any | '';
   workOrderNo: any | '';
   vehicleNo: any | '';
