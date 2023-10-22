@@ -18,6 +18,10 @@ steps:
   displayName: 'npm install and build'
 
 - task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: $(Build.SourcesDirectory)/dist
+    artifactName: drop
+    publishLocation: Container
 
 
 # Add more steps for saving build artifacts, deploying, etc., as needed.
