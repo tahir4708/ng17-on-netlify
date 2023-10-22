@@ -19,6 +19,6 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: $(Build.SourcesDirectory)/dist   # Change the path to the "dist" directory
+    pathtoPublish: $(Build.SourcesDirectory)/dist   # Make sure this path matches the location of your "dist" directory
     artifactName: drop
     publishLocation: Container
