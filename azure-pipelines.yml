@@ -2,12 +2,12 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'  # Use a Windows-based agent pool for IIS
+  vmImage: 'windows-latest'
 
 steps:
 - task: UseNode@1
   inputs:
-    version: '16.x'  # Change the Node.js version if needed
+    version: '16.x'
   displayName: 'Install Node.js'
 
 - script: |
@@ -19,9 +19,6 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: $(Build.SourcesDirectory)/dist
+    pathtoPublish: $(Build.SourcesDirectory)/dist   # Change the path to the "dist" directory
     artifactName: drop
     publishLocation: Container
-
-
-# Add more steps for saving build artifacts, deploying, etc., as needed.
