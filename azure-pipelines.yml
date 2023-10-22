@@ -17,8 +17,8 @@ steps:
     ng build 
   displayName: 'npm install and build'
 
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@0
+  displayName: 'Publish pipeline artifact'
   inputs:
-    pathtoPublish: $(Build.SourcesDirectory)/dist   # Make sure this path matches the location of your "dist" directory
-    artifactName: drop
-    publishLocation: Container
+    artifactName: 'drop'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
