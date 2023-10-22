@@ -7,7 +7,7 @@ pool:
 steps:
 - task: UseNode@1
   inputs:
-    version: '10.x'  # Change the Node.js version if needed
+    version: '16.x'  # Change the Node.js version if needed
   displayName: 'Install Node.js'
 
 - script: |
