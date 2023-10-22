@@ -22,3 +22,14 @@ steps:
   inputs:
     artifactName: 'drop'
     targetPath: '$(Build.ArtifactStagingDirectory)'
+
+- powershell: |
+    $sourcePath = "$(Build.ArtifactStagingDirectory)\dist"
+    $destinationPath = "C:\azagent\A2"
+
+    # Create the destination directory if it doesn't exist
+    New-Item -Path $destinationPath -ItemType Directory -Force
+
+    # Copy the files from source to destination
+    Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
+  displayName: 'Copy dist to C:\azagent\A2'
