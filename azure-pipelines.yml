@@ -2,20 +2,33 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'  # Use a Windows-based agent pool for IIS
+  vmImage: 'windows-latest'
 
 steps:
 - task: UseNode@1
   inputs:
-    version: '10.x'  # Change the Node.js version if needed
-  displayName: 'Install Node.js'
+    version: '16.x'
+    displayName: 'Install Node.js'
 
 - script: |
     npm install -g @angular/cli --force
     npm install --force
     npm run lint
-    ng build --prod
+    ng build 
   displayName: 'npm install and build'
 
+- powershell: |
+    $sourcePath = "$(System.DefaultWorkingDirectory)\dist"  # Use the correct source path
+    $destinationPath = "C:\azagent\A2"
 
-# Add more steps for saving build artifacts, deploying, etc., as needed.
+    # Verify if the source directory exists
+    if (Test-Path -Path $sourcePath -PathType Container) {
+        # Create the destination directory if it doesn't exist
+        New-Item -Path $destinationPath -ItemType Directory -Force
+
+        # Copy the files from source to destination
+        Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
+    } else {
+        Write-Host "Source directory '$sourcePath' does not exist."
+    }
+  displayName: 'Copy dist to C:\azagent\A2'
