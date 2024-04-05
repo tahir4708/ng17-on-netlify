@@ -5,36 +5,60 @@
 </ngx-spinner>
 
 <div *ngIf="!base64" [ngClass]="{ 'blur-background': spinner }">
-  <div class="app-card">
-    <h2>Bill Information</h2>
-    <div class="form-group row">
-      <div class="col-md-3">
-        <div class="field">
-          <label for="billNo">Bill No</label>
-          <input type="text" class="input-field" id="billNo" [(ngModel)]="kcpBill.billNo" required autofocus />
-        </div>
-      </div>
+  <form [formGroup]="formGroup">
+    <input formControlName="id" type="text" class="input-field" hidden="hidden" id="id" [(ngModel)]="kcpBill.id"   />
+    <input formControlName="deleted" type="text" class="input-field" hidden="hidden" id="deleted" [(ngModel)]="kcpBill.id"   />
 
-      <div class="col-md-3">
-        <div class="field">
-          <label for="workOrderNo">Work Order No</label>
-          <input type="text" class="input-field" id="workOrderNo" [(ngModel)]="kcpBill.workOrderNo" required autofocus />
+    <div class="app-card">
+      <h2>Bill Information</h2>
+      <div class="form-group row">
+        <div class="col-md-3">
+          <div class="field">
+            <label for="billNo">Bill No</label>
+            <input formControlName="billNo" type="text" class="input-field" id="billNo" [(ngModel)]="kcpBill.billNo" required autofocus />
+            <div *ngIf="formGroup.get('billNo').hasError('required')" class="error-message">
+              Bill No is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="field">
+            <label for="workOrderNo">Work Order No</label>
+            <input type="text" formControlName="workOrderNo" class="input-field" id="workOrderNo" [(ngModel)]="kcpBill.workOrderNo" required autofocus />
+            <div *ngIf="formGroup.get('workOrderNo').hasError('required')" class="error-message">
+              WorkOrder No is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="field">
+            <label for="vehicleNo">Vehicle No</label>
+            <input type="text" formControlName="vehicleNo" class="input-field" id="vehicleNo" [(ngModel)]="kcpBill.vehicleNo" required autofocus />
+            <div *ngIf="formGroup.get('vehicleNo').hasError('required')" class="error-message">
+              Vehicle No is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="field">
+            <label for="date">Date</label>
+            <input type="date" formControlName="date" class="input-field" id="date" [(ngModel)]="kcpBill.date" required autofocus />
+          </div>
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="field">
-          <label for="vehicleNo">Vehicle No</label>
-          <input type="text" class="input-field" id="vehicleNo" [(ngModel)]="kcpBill.vehicleNo" required autofocus />
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="field">
-          <label for="date">Date</label>
-          <input type="date" class="input-field" id="date" [(ngModel)]="kcpBill.date" required autofocus />
+      <div class="form-group row">
+
+        <div class="col-md-3">
+          <div class="field">
+            <label for="vehicleName">Type of Vehicle</label>
+            <input type="text" formControlName="vehicleName" class="input-field" id="vehicleName" [(ngModel)]="kcpBill.vehicleName" required autofocus />
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
+
 
   <div class="app-card">
     <h2>Parts Details</h2>
@@ -43,7 +67,7 @@
       <p-button type="button" icon="pi pi-minus" (click)="deleteRow('part')" styleClass="p-button-text"></p-button>
     </div>
     <jqxGrid #dataTable (onRowselect)="OnRowSelect($event)" [width]="'100%'"
-             [source]="dataAdapter" [columns]="columns"
+             [source]="dataAdapter" [columns]="columns" (onCellvaluechanged)="calculateCurrentRateSum()"
              (onCellendedit)="calculatePartsBill()" [autoheight]='true'
              [theme]="'office'" [sortable]="true" [filterable]="true" [editable]="true" [selectionmode]="'checkbox'" >
     </jqxGrid>
@@ -67,7 +91,7 @@
     </div>
     <jqxGrid #labourRateDataTable (onCellvaluechanged)="OnRowSelect($event)" [autoheight]='true' [width]="'100%'"
              [source]="dataAdapter" [columns]="labourRateColumns" (onRowdoubleclick)="onRowDobleClick($event)"
-             [theme]="'office'" [sortable]="true" (onCellendedit)="calculateCurrentRateSum()"
+             [theme]="'office'" [sortable]="true"  (onCellvaluechanged)="calculateCurrentRateSum()"
              [filterable]="true" [editable]="true" [selectionmode]="'checkbox'" >
     </jqxGrid>
     <div class="form-group row" style="padding-top: 2rem;">
@@ -78,32 +102,65 @@
 
         <div class="field" style="padding-left: 2rem">
           <input type="text" disabled class="input-field" id="totalLabourBill" [(ngModel)]="kcpBill.totalLabourBill" required autofocus />
+
         </div>
       </div>
     </div>
   </div>
 
-  <div class="form-group row" style="padding-top: 2rem;">
-    <div class="col-md-6 d-flex justify-content-start">
-      <div class="field">
-        <p-button type="button" class="button-page" (click)="saveEntity()">Save</p-button>
+  <div class="app-card">
+    <div class="form-group row" style="padding-top: 2rem; padding-left: 2rem">
+      <div class="col-md-6 d-flex justify-content-start">
+        <div class="form-group row">
+          <div style="padding-left: 30px" class="row-cols-3 -align-center">
+            <td>
+              <button class="btn btn-success btn-outline-success rounded" (click)="saveEntity()">
+                <i class="la la-save"></i> Save
+              </button>
+            </td>
+          </div>
+          <div *ngIf="id > 0" style="padding-left: 30px" class="row-cols-3 -align-center">
+            <td>
+              <button class="btn btn-warning btn-outline-warning rounded" (click)="downloadFile()">
+                <i class="la la-print"></i> Print
+              </button>
+            </td>
+          </div>
+          <div *ngIf="!(id > 0)" style="padding-left: 30px" class="row-cols-3 -align-center">
+            <td>
+              <button class="btn btn-warning btn-outline-warning rounded" (click)="resetForm()">
+                <i class="la la-close"></i> Reset
+              </button>
+            </td>
+          </div>
+        </div>
       </div>
-      <div *ngIf="!id" class="field" style="padding-left: 2rem">
-        <p-button type="button" class="button-page" (click)="resetForm()">Reset</p-button>
-      </div>
-    </div>
-    <div class="col-md-6 d-flex justify-content-end">
-      <div class="field">
-        <label for="totalBill">Grand Total</label>
-      </div>
-      <div class="field" style="padding-left: 2rem">
-        <input type="text" disabled class="input-field" id="totalBill" [(ngModel)]="kcpBill.totalBill" required autofocus />
+
+      <div class="col-md-6 d-flex justify-content-end">
+        <div class="field">
+          <label for="totalBill">Grand Total</label>
+        </div>
+        <div class="field" style="padding-left: 2rem">
+          <input type="text" disabled class="input-field" id="totalBill" [(ngModel)]="kcpBill.totalBill" required autofocus />
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<app-card>
+</div>
+<div *ngIf="pdfDataUrl">
+  <div style="padding-left: 30px" class="row-cols-3 -align-center">
+    <td>
+      <button class="btn btn-success btn-outline-success rounded" (click)="CancelPdf()">
+        <i class="la la-danger"></i> Cancel
+      </button>
+    </td>
+  </div>
+  <iframe [src]="pdfDataUrl" width="100%" height="600"></iframe>
+</div>
+<!--<app-card>
   <jqxButton *ngIf="base64" class="btn-secondary" (click)="CancelPdf()">Cancel</jqxButton>
-  <iframe *ngIf="base64" [src]="getPdfDataUrl()" width="100%" height="600"></iframe>
-</app-card>
+  <iframe *ngIf="pdfDataReceived" [src]="sanitizedDataUrl" width="100%" height="600"></iframe>
+
+
+</app-card>-->

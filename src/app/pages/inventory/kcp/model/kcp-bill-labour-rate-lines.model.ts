@@ -3,5 +3,7 @@ export interface KcpBillLabourRateLinesModel {
     workItemId: any;
     description: any;
     labourRate: any;
-    deleted: any;
+    quantity: number;
+    totalPrice: any;
+    deleted: false;
 }

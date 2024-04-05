@@ -15,7 +15,7 @@ import {AuthInterceptor, authInterceptorProviders} from './pages/auth/Authentica
 import {InventoryModule} from './pages/inventory/inventory.module';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ToastrModule} from "ngx-toastr";
-import {DatePipe} from "@angular/common";
+import {DatePipe, HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {InputTextModule} from "primeng/inputtext";
 import { ReactiveFormsModule } from '@angular/forms';
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
@@ -66,7 +66,8 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true,
-  },,DatePipe],
+  },DatePipe,
+    {provide: LocationStrategy , useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,10 +8,10 @@
   </div>
   <div class="card">
     <div class="card-header">
-
+      <h1>KCP Bill Info</h1>
     </div>
     <div class="card-body">
-      <jqxGrid #dataTable   [height]="'100%'"  [width]="'100%'"
+      <jqxGrid #dataTable  (onRowdoubleclick)="onRowdoubleclick($event)" [height]="'100%'"  [width]="'100%'"
                [source]="dataAdapter" [columns]="columns" [pageable]="true"
                (onPagechanged)="onPageChanged($event)" (onPagesizechanged)="onPageSizeChanged($event)"
                [theme]="'office'" [sortable]="true"  [filterable]="true" [selectionmode]="'multiplerowsextended'" >
