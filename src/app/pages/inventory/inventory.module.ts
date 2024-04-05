@@ -37,7 +37,6 @@ import {DropdownModule} from "primeng/dropdown";
 import {MessageModule} from "primeng/message";
 import {DeferModule} from "primeng/defer";
 import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
-import {PdfViewerModule} from "ng2-pdf-viewer";
 import {ToastModule} from "primeng/toast";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 
