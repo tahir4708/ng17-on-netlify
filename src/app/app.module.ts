@@ -15,7 +15,7 @@ import {AuthInterceptor, authInterceptorProviders} from './pages/auth/Authentica
 import {InventoryModule} from './pages/inventory/inventory.module';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ToastrModule} from "ngx-toastr";
-import {DatePipe, HashLocationStrategy, LocationStrategy} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {InputTextModule} from "primeng/inputtext";
 import { ReactiveFormsModule } from '@angular/forms';
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
@@ -25,7 +25,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {TabViewModule} from "primeng/tabview";
 import {ButtonModule} from "primeng/button";
 import {DashboardDefaultModule} from "./pages/dashboard/dashboard-default/dashboard-default.module";
-import {PdfViewerComponent, PdfViewerModule} from 'ng2-pdf-viewer';
+
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 @NgModule({
   declarations: [
@@ -56,7 +56,6 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     ButtonModule,
     DashboardDefaultModule,
     InputTextModule,
-    PdfViewerModule,
     ProgressSpinnerModule,
 
 
@@ -66,8 +65,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true,
-  },DatePipe,
-    {provide: LocationStrategy , useClass: HashLocationStrategy}],
+  },,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
