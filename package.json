@@ -7,7 +7,7 @@
     "build": "ng build",
     "e2e": "ng e2e",
     "lint": "ng lint",
-    "watch": "ng build --watch --configuration development",
+    "watch": "ng build --watch --configuration development"
 
   },
   "private": true,
