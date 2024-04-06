@@ -112,7 +112,6 @@
 
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/froala-editor/js/froala_editor.pkgd.min.js",
               "src/assets/charts/flot/jquery.flot.js",
               "src/assets/charts/flot/jquery.flot.categories.js",
               "src/assets/charts/flot/jquery.flot.pie.js",
